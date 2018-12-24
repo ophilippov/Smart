@@ -1,0 +1,126 @@
+﻿<local:BaseDialogUserControl x:Class="Smart.DialogMessageBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Smart"
+             xmlns:core = "clr-namespace:Smart.Core;assembly=Smart.Core"
+             mc:Ignorable="d" >
+
+    <Border Background="{StaticResource DialogWindowBackgroundBrush}" Padding="15 15 15 10">
+        <StackPanel d:DataContext="{x:Static core:MessageBoxDialogDesignModel.Instance}"
+                    Background="{StaticResource WindowBackgroundBrush}">
+
+            <!--Information -->
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Icon-->
+                <TextBlock Grid.Column="0"
+                           FontFamily="{StaticResource MaterialDesign}"
+                           Foreground="{Binding Type, Converter={local:DialogTypeToBrushValueConverter}}"
+                           Text="{Binding Type, Converter={local:DialogTypeToIconValueConverter}}"
+                           FontSize="{StaticResource FontSizeMostLargest}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           SnapsToDevicePixels="True"
+                       />
+
+
+                <!--Message-->
+                <ScrollViewer Grid.Column="1"
+                              Width="270"
+                              MaxHeight="88"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalAlignment="Center"
+                              Padding="12 0 12 0">
+                    <TextBlock 
+                          
+                       Text="{Binding Message}"
+                       Foreground="{StaticResource ForegroundDarkBrush}"
+                       FontFamily="{StaticResource SegoeUILight}"
+                       FontSize="{StaticResource FontSizeRegular}"
+                       TextWrapping="Wrap"
+                       TextAlignment="Justify" 
+                       VerticalAlignment="Center"
+                           Margin="5"
+                           />
+                </ScrollViewer>
+               
+            </Grid>
+
+            <Grid  Margin=" 0 15 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Additional More Button-->
+                <Button Grid.Column="0"
+                        Style="{StaticResource TextButton}"
+                        IsDefault="{Binding DefaultButton, Converter={local:DialogButtonToDefaultValueConverter}, ConverterParameter=4}"
+                        Content="{Binding ButtonText, Converter={local:DialogButtonTextToStringValueConverter}, ConverterParameter=4}"
+                        Command="{Binding MoreCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DialogMessageBox}}}"
+                        HorizontalAlignment="Left"
+                        Margin="-1 0 20 0"
+                        Visibility="{Binding Button, Converter={local:DialogButtonToVisibilityValueConverter}, ConverterParameter=4}"
+                        />
+                
+                <!-- Buttons -->
+                <StackPanel HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Grid.Column="1"
+                            Margin="0 0 -1 0">
+                   
+
+                    <!--OK button-->
+                    <Button Style="{StaticResource ButtonCommon}"
+                        IsDefault="{Binding DefaultButton, Converter={local:DialogButtonToDefaultValueConverter}, ConverterParameter=0}"
+                        Content="{Binding ButtonText, Converter={local:DialogButtonTextToStringValueConverter}, ConverterParameter=0}"
+                        Command="{Binding OKCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DialogMessageBox}}}"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding Button, Converter={local:DialogButtonToVisibilityValueConverter}, ConverterParameter=0}"
+                        />
+
+                    <!--Yes button-->
+                    <Button Style="{StaticResource ButtonCommon}"
+                        IsDefault="{Binding DefaultButton, Converter={local:DialogButtonToDefaultValueConverter}, ConverterParameter=2}"
+                        Content="{Binding ButtonText, Converter={local:DialogButtonTextToStringValueConverter}, ConverterParameter=2}"
+                        Command="{Binding YesCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DialogMessageBox}}}"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding Button, Converter={local:DialogButtonToVisibilityValueConverter}, ConverterParameter=2}"
+                    />
+
+                    <!--No button-->
+                    <Button Style="{StaticResource ButtonCommon}"
+                        IsDefault="{Binding DefaultButton, Converter={local:DialogButtonToDefaultValueConverter}, ConverterParameter=3}"
+                        Content="{Binding ButtonText, Converter={local:DialogButtonTextToStringValueConverter}, ConverterParameter=3}"
+                        Command="{Binding NoCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DialogMessageBox}}}"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding Button, Converter={local:DialogButtonToVisibilityValueConverter}, ConverterParameter=3}"
+                        />
+
+                    <!--Cancel button-->
+                    <Button Style="{StaticResource ButtonCommon}"
+                        IsDefault="{Binding DefaultButton, Converter={local:DialogButtonToDefaultValueConverter}, ConverterParameter=1}"
+                        Content="{Binding ButtonText, Converter={local:DialogButtonTextToStringValueConverter}, ConverterParameter=1}"
+                        Command="{Binding CancelCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DialogMessageBox}}}"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding Button, Converter={local:DialogButtonToVisibilityValueConverter}, ConverterParameter=1}"
+                        />
+
+                </StackPanel>
+
+            </Grid>
+           
+
+
+        </StackPanel>
+    </Border>
+</local:BaseDialogUserControl>

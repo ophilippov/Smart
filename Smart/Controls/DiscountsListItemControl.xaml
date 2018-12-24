@@ -1,0 +1,1422 @@
+﻿<UserControl x:Class="Smart.DiscountsListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Smart"
+             xmlns:core="clr-namespace:Smart.Core;assembly=Smart.Core"
+             mc:Ignorable="d" 
+             d:DesignWidth="700"
+             Height="80">
+
+    <UserControl.Resources>
+        <Style x:Key="ContentStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Border x:Name="outerBorder"
+                                Margin="0 2 0 3"
+                                Background="{StaticResource WindowBackgroundBrush}" 
+                                BorderBrush="{StaticResource DiscountsListItemNormalBrush}"
+                                BorderThickness="1"
+                                SnapsToDevicePixels="True">
+
+                            
+
+                            <!--Border for the Hover effect-->
+                            <Border x:Name="outerBorderHover"
+                                    Background="{StaticResource DiscountsListItemTransparentHoverBrush}"
+                                    BorderBrush="{StaticResource DiscountsListItemTransparentHoverBrush}"
+                                    BorderThickness="1"
+                                    SnapsToDevicePixels="True"
+                                    Margin="-1">
+
+                                    <!--Border for the checked effect-->
+                                <Border x:Name="outerBorderChecked"
+                                            Background="Transparent" 
+                                            BorderBrush="Transparent"
+                                            BorderThickness="1"
+                                            SnapsToDevicePixels="True"
+                                            Margin="-1">
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="6"/>
+                                            <!--Spacing-->
+                                            <ColumnDefinition Width="10"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <!--Spacing-->
+                                            <ColumnDefinition Width="10"/>
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <!--Indicator for status-->
+                                        <Border x:Name="indicator"
+                                                Grid.Column="0"
+                                                Margin="-1 -1 0 -1"
+                                                BorderBrush="Transparent"
+                                                BorderThickness="0"
+                                                Background="{StaticResource DiscountsListItemNormalBrush}"/>
+
+                                        <!--Indicator for hover-->
+                                        <Border x:Name="indicatorHover"
+                                                Grid.Column="0"
+                                                Margin="-1 -1 0 -1"
+                                                BorderBrush="{StaticResource DiscountsListItemTransparentHoverBrush}"
+                                                BorderThickness="0"
+                                                Background="{StaticResource DiscountsListItemTransparentHoverBrush}"/>
+                                        
+                                        <!--Indicator for checked-->
+                                        <Border x:Name="indicatorChecked"
+                                                Grid.Column="0"
+                                                Margin="-1 -1 0 -1"
+                                                BorderBrush="Transparent"
+                                                BorderThickness="0"
+                                                Background="Transparent"/>
+
+
+                                            <!-- Content -->
+                                        <Grid Grid.Column="2" >
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto" MinWidth="220"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Name -->
+                                            <Grid Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    HorizontalAlignment="Left">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource TextIconMDCommon}"
+                                                           FontSize="{StaticResource FontSizePreLarge}"
+                                                           VerticalAlignment="Bottom"
+                                                           Foreground="{StaticResource ForegroundDarkBlueBrush}"
+                                                           Margin="0 0 5 2"
+                                                           Text="{Binding DiscountType, Converter={local:DiscountTypeToIconValueConverter}}"
+                                                           ToolTip="{Binding DiscountType, Converter={local:DiscountTypeToStringValueConverter}}"
+                                                           />
+                                                
+                                                <TextBlock Grid.Column="1"
+                                                       Text="{Binding DiscountName}"
+                                                       Style="{StaticResource TextBlockCommon}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       FontSize="{StaticResource FontSizePreLarge}"
+                                                       ToolTip="{Binding DiscountName}"
+                                                       />
+                                            </Grid>
+
+                                            <!--Products-->
+                                            <Grid Grid.Column="0"
+                                                  Grid.Row="1"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Bottom"
+                                                  ToolTip="{Binding ProductsNamesString}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="товары:"
+                                                           Style="{StaticResource TextBlockCommon}"/>
+                                                
+                                                <TextBlock Grid.Column="1"
+                                                    Text="{Binding ProductsNamesString}"
+                                                       Style="{StaticResource TextBlockCommon}"
+                                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                                       Margin="10 0 5 0"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                                
+                                            </Grid>
+
+                                            <!--Customers-->
+                                            <Grid Grid.Column="0"
+                                                  Grid.Row="2"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Top"
+                                                  Margin="0 -2 0 0"
+                                                  ToolTip="{Binding CustomersNamesString}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="клиенты:"
+                                                           Style="{StaticResource TextBlockCommon}"/>
+
+                                                <TextBlock Grid.Column="1"
+                                                    Text="{Binding CustomersNamesString}"
+                                                       Style="{StaticResource TextBlockCommon}"
+                                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                                       Margin="10 0 5 0"
+                                                       TextTrimming="CharacterEllipsis"/>
+
+                                            </Grid>
+                                            <!--Separator-->
+                                            <Rectangle Grid.Column="1"
+                                                       Grid.RowSpan="3"
+                                                       VerticalAlignment="Stretch"
+                                                       SnapsToDevicePixels="True"
+                                                       Width="1"
+                                                       Margin="5 5 5 4" 
+                                                       Stroke="{StaticResource SeparatorBrush}" />
+
+                                            <!--Date-->
+                                            <StackPanel Orientation="Horizontal"
+                                                        Grid.Column="2"
+                                                        Grid.Row="0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Bottom"
+                                                        Margin="0 0 0 2">
+                                                <TextBlock Text="с"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <TextBlock Text="{Binding StartDate, Converter={local:DateTimeToDateStringValueConverter}}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource SemiDarkBlueBrush}"
+                                                           Margin="10 0 10 0"/>
+                                                <TextBlock Text="по"
+                                                           Style="{StaticResource TextBlockCommon}"/>
+                                                <TextBlock Text="{Binding EndDate, Converter={local:DateTimeToDateStringValueConverter}}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkRedBrush}"
+                                                            Margin="10 0 5 0"/>
+
+                                            </StackPanel>
+
+                                            <!--Separator-->
+                                            <Rectangle Grid.Column="3"
+                                                       Grid.RowSpan="3"
+                                                       VerticalAlignment="Stretch"
+                                                       SnapsToDevicePixels="True"
+                                                       Width="1"
+                                                       Margin="5 5 5 4" 
+                                                       Stroke="{StaticResource SeparatorBrush}" />
+
+
+                                            <!--Type1: ProductPercentOne-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=0}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=0}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                    <Run Text="-"/><Run Text="{Binding DiscountRate}"/><Run Text="%"/>
+                                                </TextBlock>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -6 0 0">
+                                                    <Run Text="на "/><Run Text="{Binding MinProductAmount}"/><Run Text=" товар"/>
+                                                </TextBlock>
+
+                                            </Grid>
+
+                                            <!--Type2: ProductPercentAll-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=1}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=1}">
+
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"
+                                                       Style="{StaticResource TextBlockCommon}"
+                                                       HorizontalAlignment="Center"
+                                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                                       FontSize="{StaticResource FontSizeLarge}"
+                                                       Foreground="{StaticResource DarkGreenBrush}">
+                                                <Run Text="-"/><Run Text="{Binding DiscountRate}"/><Run Text="%"/>
+                                                </TextBlock>
+
+                                                <TextBlock Grid.Row="1"
+                                                       Style="{StaticResource TextBlockCommon}"
+                                                       HorizontalAlignment="Center"
+                                                       FontFamily="{StaticResource SegoeUILight}"
+                                                       Foreground="{StaticResource DarkGreenBrush}"
+                                                       Margin="0 -6 0 0"
+                                                       Text="на каждый товар"/>
+                                            </Grid>
+
+                                            <!--Type3: ProductGift-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=2}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=2}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+
+                                                <Viewbox Grid.Row="0" Width="130" Height="35">
+                                                    <TextBlock Text="{Binding DiscountGiftProductName}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </Viewbox>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="в подарок"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -6 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type4: BillPercentMinCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=3}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductsAmountBill}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=3}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                    <Run Text="-"/><Run Text="{Binding DiscountRate}"/><Run Text="%"/>
+                                                </TextBlock>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="на текущий заказ"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -5 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type5: BillPercentBillSumm-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=4}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="в заказе на сумму от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock 
+                                                               Text="{Binding MinSummBill, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="10 0 0 0"/>
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 2"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeVerySmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=4}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                    <Run Text="-"/><Run Text="{Binding DiscountRate}"/><Run Text="%"/>
+                                                </TextBlock>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="на текущий заказ"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -5 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type6: BillPercentMinProductCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=5}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=5}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                    <Run Text="-"/><Run Text="{Binding DiscountRate}"/><Run Text="%"/>
+                                                </TextBlock>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="на текущий заказ"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -5 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type7: BillPercentBillSummMinProductCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=6}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="2"
+                                                  VerticalAlignment="Top"
+                                                  Margin="0 -2 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=6}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="в заказе на сумму от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock 
+                                                               Text="{Binding MinSummBill, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="10 0 0 0"/>
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 2"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeVerySmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=6}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                    <Run Text="-"/><Run Text="{Binding DiscountRate}"/><Run Text="%"/>
+                                                </TextBlock>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="на текущий заказ"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -5 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type8: BillGiftMinCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=7}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductsAmountBill}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=7}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+
+                                                <Viewbox Grid.Row="0" Width="130" Height="35">
+                                                    <TextBlock Text="{Binding DiscountGiftProductName}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </Viewbox>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="в подарок"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -6 0 0"/>
+
+
+
+                                            </Grid>
+                                            
+                                            <!--Type9: BillGiftBillSumm-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=8}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="в заказе на сумму от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock 
+                                                               Text="{Binding MinSummBill, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="10 0 0 0"/>
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 2"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeVerySmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=8}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+
+                                                <Viewbox Grid.Row="0" Width="130" Height="35">
+                                                    <TextBlock Text="{Binding DiscountGiftProductName}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </Viewbox>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="в подарок"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -6 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type10: BillGiftMinProductCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=9}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=9}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+
+                                                <Viewbox Grid.Row="0" Width="130" Height="35">
+                                                    <TextBlock Text="{Binding DiscountGiftProductName}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </Viewbox>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="в подарок"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -6 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type11: BillGiftBillSummMinProductCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=10}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="2"
+                                                  VerticalAlignment="Top"
+                                                  Margin="0 -2 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=10}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="в заказе на сумму от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock 
+                                                               Text="{Binding MinSummBill, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="10 0 0 0"/>
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 2"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeVerySmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=10}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+
+                                                <Viewbox Grid.Row="0" Width="130" Height="35">
+                                                    <TextBlock Text="{Binding DiscountGiftProductName}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </Viewbox>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="в подарок"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -6 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type12: BillSummMinCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=11}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductsAmountBill}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=11}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <StackPanel Orientation="Horizontal"
+                                                            HorizontalAlignment="Center"
+                                                            Grid.Row="0">
+                                                    <TextBlock
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                        <Run Text="-"/><Run Text="{Binding DiscountSummBill, Converter={local:DoubleToStringPriceValueConverter}}"/>
+                                                    </TextBlock>
+
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 3"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeSmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </StackPanel>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="на текущий заказ"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -5 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type13: BillSummBillSumm-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=12}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="в заказе на сумму от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock 
+                                                               Text="{Binding MinSummBill, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="10 0 0 0"/>
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 2"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeVerySmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=12}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <StackPanel Orientation="Horizontal"
+                                                            HorizontalAlignment="Center"
+                                                            Grid.Row="0">
+                                                    <TextBlock
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                        <Run Text="-"/><Run Text="{Binding DiscountSummBill, Converter={local:DoubleToStringPriceValueConverter}}"/>
+                                                    </TextBlock>
+
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 3"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeSmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </StackPanel>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="на текущий заказ"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -5 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type14: BillSummMinProductCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  Grid.RowSpan="2"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=13}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=13}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <StackPanel Orientation="Horizontal"
+                                                            HorizontalAlignment="Center"
+                                                            Grid.Row="0">
+                                                    <TextBlock
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                        <Run Text="-"/><Run Text="{Binding DiscountSummBill, Converter={local:DoubleToStringPriceValueConverter}}"/>
+                                                    </TextBlock>
+
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 3"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeSmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </StackPanel>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="на текущий заказ"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -5 0 0"/>
+
+
+
+                                            </Grid>
+
+                                            <!--Type15: BillSummBillSummMinProductCount-->
+                                            <!--Terms-->
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="1"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=14}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="при покупке от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding MinProductAmount}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="10 0 5 0"/>
+                                                    <TextBlock Text="единиц"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="0 0 5 0"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <Grid Grid.Column="2"
+                                                  Grid.Row="2"
+                                                  VerticalAlignment="Top"
+                                                  Margin="0 -2 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=14}"
+                                                  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="в заказе на сумму от"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Margin="5 0 0 0"/>
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock 
+                                                               Text="{Binding MinSummBill, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"
+                                                               Margin="10 0 0 0"/>
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 2"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeVerySmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+
+                                                </StackPanel>
+
+                                            </Grid>
+                                            <!--Discount description-->
+                                            <Grid Grid.Column="4"
+                                                  Grid.RowSpan="3"
+                                                  Width="140"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="5 0 0 0"
+                                                  Visibility="{Binding DiscountType, Converter={local:DiscountTypeToVisibilityValueConverter}, ConverterParameter=14}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <StackPanel Orientation="Horizontal"
+                                                            HorizontalAlignment="Center"
+                                                            Grid.Row="0">
+                                                    <TextBlock
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontFamily="{StaticResource SegoeUIRegular}"
+                                                           FontSize="{StaticResource FontSizeLarge}"
+                                                           Foreground="{StaticResource DarkGreenBrush}">
+                                                        <Run Text="-"/><Run Text="{Binding DiscountSummBill, Converter={local:DoubleToStringPriceValueConverter}}"/>
+                                                    </TextBlock>
+
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 5 3"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeSmall}"
+                                                               Foreground="{StaticResource DarkGreenBrush}"/>
+                                                </StackPanel>
+
+                                                <TextBlock Grid.Row="1"
+                                                           Text="на текущий заказ"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           HorizontalAlignment="Center"
+                                                           FontFamily="{StaticResource SegoeUILight}"
+                                                           Foreground="{StaticResource DarkGreenBrush}"
+                                                           Margin="0 -5 0 0"/>
+
+
+
+                                            </Grid>
+
+
+
+
+                                        </Grid>
+
+
+                                    </Grid>
+
+                                </Border>
+
+                            </Border>
+                            
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+
+                                        <ColorAnimation Duration="0:0:0.2"
+                                                        To="{StaticResource OrdersListItemHover}"
+                                                        Storyboard.TargetProperty="Background.Color"
+                                                        Storyboard.TargetName="indicatorHover"
+                                            />
+                                        <ColorAnimation Duration="0:0:0.2"
+                                                        To="{StaticResource OrdersListItemHover}"
+                                                        Storyboard.TargetProperty="BorderBrush.Color"
+                                                        Storyboard.TargetName="outerBorderHover"
+                                            />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0.2"
+                                            To="{StaticResource OrdersListItemTransparentHover}"
+                                            Storyboard.TargetProperty="Background.Color"
+                                            Storyboard.TargetName="indicatorHover"
+                                            />
+                                        <ColorAnimation Duration="0:0:0.2"
+                                            To="{StaticResource OrdersListItemTransparentHover}"
+                                            Storyboard.TargetProperty="BorderBrush.Color"
+                                            Storyboard.TargetName="outerBorderHover"
+                                            />
+
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            
+
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Background" 
+                                        TargetName="indicatorChecked"
+                                        Value="{StaticResource OrdersListItemSelectedBrush}"/>
+                                <Setter Property="BorderBrush"
+                                        TargetName="outerBorderChecked"
+                                        Value="{StaticResource OrdersListItemSelectedBrush}"/>
+                            </DataTrigger>
+
+                            
+                            
+
+                           
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            
+        </Style>
+    </UserControl.Resources>
+
+    <ContentControl d:DataContext="{x:Static core:DiscountsListItemDesignModel.Instance}"
+                    Style="{StaticResource ContentStyle}">
+        <ContentControl.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCommand}"/>
+            
+            <!--NOTE: We don't need to call a select command manualy before 
+            open this order due to LeftClick event fires immediately before LeftDoubleClick -->
+            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenDiscountCommand}"/>
+        </ContentControl.InputBindings>
+    </ContentControl>
+</UserControl>

@@ -1,0 +1,315 @@
+﻿<UserControl x:Class="Smart.StockOrdersListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Smart"
+             xmlns:core="clr-namespace:Smart.Core;assembly=Smart.Core"
+             mc:Ignorable="d" 
+             d:DesignWidth="600"
+             Height="Auto">
+
+    <UserControl.Resources>
+        <Style x:Key="ContentStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Border x:Name="outerBorder"
+                                Margin="0 2 0 3"
+                                Background="{StaticResource WindowBackgroundBrush}" 
+                                BorderBrush="{StaticResource OrdersListItemNormalBrush}"
+                                BorderThickness="1"
+                                SnapsToDevicePixels="True"
+                                ClipToBounds="True">
+
+                          
+                            <!--Border for the Hover effect-->
+                            <Border x:Name="outerBorderHover"
+                                    Background="{StaticResource OrdersListItemTransparentHoverBrush}"
+                                    BorderBrush="{StaticResource OrdersListItemTransparentHoverBrush}"
+                                    BorderThickness="1"
+                                    SnapsToDevicePixels="True"
+                                    Margin="-1">
+
+                                    <!--Border for the checked effect-->
+                                    <Border x:Name="outerBorderChecked"
+                                            Background="Transparent" 
+                                            BorderBrush="Transparent"
+                                            BorderThickness="1"
+                                            SnapsToDevicePixels="True"
+                                            Margin="-1">
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6"/>
+                                                <!--Spacing-->
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+
+                                                <!--Spacing-->
+                                                <ColumnDefinition Width="10"/>
+
+                                                <ColumnDefinition Width="Auto"/>
+
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="60"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+
+
+                                        <!--Indicator for status-->
+                                            <Border x:Name="indicator"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2"
+                                                    Margin="-1 -1 0 -1"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="0"
+                                                    Background="{Binding OrderStatus, Converter={local:OrderStatusToBrushStockValueConverter}}"/>
+
+                                            
+
+                                            <!--Indicator for hover-->
+                                            <Border x:Name="indicatorHover"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2"
+                                                    Margin="-1 -1 0 -1"
+                                                    BorderThickness="0"
+                                                    BorderBrush="{StaticResource OrdersListItemTransparentHoverBrush}"
+                                                    Background="{StaticResource OrdersListItemTransparentHoverBrush}"/>
+                                            
+                                            <!--Indicator for checked-->
+                                            <Border x:Name="indicatorChecked"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2"
+                                                    Margin="-1 -1 0 -1"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="0"
+                                                    Background="Transparent"/>
+
+
+                                            <!-- Content -->
+                                            <Grid Grid.Column="2" >
+                                                
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Top Row -->
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <!-- Minimum spacing -->
+                                                        <ColumnDefinition Width="20"/>
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!--Name-->
+                                                    <TextBlock Grid.Column="0"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               FontSize="{StaticResource FontSizePreLarge}"
+                                                               Text="{Binding Name}"/>
+
+                                                    <!--Order info-->
+                                                    <StackPanel Orientation="Horizontal"
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Bottom"
+                                                                Margin="0 0 0 2">
+
+                                                        <TextBlock Text="Заказ №:"
+                                                                   Style="{StaticResource TextBlockCommon}"/>
+
+                                                        <TextBlock Text="{Binding OrderNumber}"
+                                                                   Margin="5 0 0 0"
+                                                                   Style="{StaticResource TextBlockCommon}"
+                                                                   Foreground="{StaticResource OrdersListItemOrderBrush}"/>
+
+                                                        <TextBlock Text="от"
+                                                                   Margin="10 0"
+                                                                   Style="{StaticResource TextBlockCommon}"/>
+
+                                                        <TextBlock Text="{Binding OrderDate, Converter={local:DateTimeToDateStringValueConverter}}"
+                                                                   Style="{StaticResource TextBlockCommon}"/>
+                                                    </StackPanel>
+
+
+
+                                                </Grid>
+
+                                                <!--Bottom Row-->
+                                                <Grid Grid.Row="1">
+                                                    <Grid.ColumnDefinitions>
+                                                        
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <!-- Minimum spacing -->
+                                                        <ColumnDefinition Width="20"/>
+                                                        <!--Spacing-->
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+
+                                                <!-- Order Status -->
+                                                <TextBlock Grid.Column="0"
+                                                               Text="{Binding OrderStatus, Converter={local:OrderStatusToStringStockValueConverter}}"
+                                                               Style="{StaticResource TextBlockCommon}"/>
+                                                <!--Payment-->
+                                                <StackPanel Orientation="Horizontal"
+                                                             Grid.Column="3">
+                                                    <TextBlock Text="сумма заказа:"
+                                                                Style="{StaticResource TextBlockCommon}"/>
+                                                    <TextBlock Text="{Binding Price, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                               Margin="10 0 0 0 "
+                                                               Style="{StaticResource TextBlockCommon}"/>
+                                                    <TextBlock Text="UAH"
+                                                               Margin="3 0 0 7"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               VerticalAlignment="Bottom"
+                                                               FontSize="{StaticResource FontSizeVerySmall}"/>
+                                                </StackPanel>
+
+                                                    
+                                                </Grid>
+
+                                            </Grid>
+
+                                            <!--Chevron to give more info (products, invoice number)-->
+                                            <Button x:Name="chevron" Grid.Column="4"
+                                                        Grid.RowSpan="2"
+                                                        Style="{StaticResource IconButtonMD}"
+                                                        FontFamily="{StaticResource FA4Regular}"
+                                                        Padding="3 0 3 0"
+                                                        Width="20"
+                                                        Margin="0 0 -20 0"
+                                                        Visibility="Visible"
+                                                        Command="{Binding OpenMoreCommand}"
+                                                       
+                                                        Content="{StaticResource DownAngleArrowIcon}"/>
+
+                                            <!--More info -->
+
+                                            <!--Invoice-->
+                                            <Grid Grid.Row="1"
+                                                      Grid.Column="2"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Top"
+                                                      local:AnimateSlideAndFadeInFromTopProperty.Value="{Binding IsMoreOpen}">
+                                                <StackPanel Orientation="Horizontal" 
+                                                                Margin="0 0 0 5" >
+                                                    <TextBlock Text="№ накладной:"
+                                                           Style="{StaticResource TextBlockCommon}"/>
+
+                                                    <TextBlock Text="{Binding InvoiceNumber}"
+                                                           Margin="5 0 0 0"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource OrdersListItemOrderBrush}"/>
+                                                </StackPanel>
+
+                                            </Grid>
+
+
+
+                                    </Grid>
+
+                                    </Border>
+
+                                </Border>
+                            
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+
+                                        <ColorAnimation Duration="0:0:0.2"
+                                                        To="{StaticResource OrdersListItemHover}"
+                                                        Storyboard.TargetProperty="Background.Color"
+                                                        Storyboard.TargetName="indicatorHover"
+                                            />
+                                        <ColorAnimation Duration="0:0:0.2"
+                                                        To="{StaticResource OrdersListItemHover}"
+                                                        Storyboard.TargetProperty="BorderBrush.Color"
+                                                        Storyboard.TargetName="outerBorderHover"
+                                            />
+                                        <ObjectAnimationUsingKeyFrames Duration="0" 
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Storyboard.TargetName="chevron">
+                                            <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" KeyTime="0" />
+                                        </ObjectAnimationUsingKeyFrames>
+
+                                        <ThicknessAnimation To="0"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            Storyboard.TargetName="chevron"
+                                                            Duration="0:0:0.2"/>
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0.2"
+                                            To="{StaticResource OrdersListItemTransparentHover}"
+                                            Storyboard.TargetProperty="Background.Color"
+                                            Storyboard.TargetName="indicatorHover"
+                                            />
+                                        <ColorAnimation Duration="0:0:0.2"
+                                            To="{StaticResource OrdersListItemTransparentHover}"
+                                            Storyboard.TargetProperty="BorderBrush.Color"
+                                            Storyboard.TargetName="outerBorderHover"
+                                            />
+                                        <ObjectAnimationUsingKeyFrames Duration="0:0:0.2" 
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Storyboard.TargetName="chevron">
+                                            <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"
+                                                                    KeyTime="0:0:0.2" />
+                                        </ObjectAnimationUsingKeyFrames>
+
+                                        <ThicknessAnimation To="0 0 -20 0"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            Storyboard.TargetName="chevron"
+                                                            Duration="0:0:0.2"/>
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            
+
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Background" 
+                                        TargetName="indicatorChecked"
+                                        Value="{StaticResource OrdersListItemSelectedBrush}"/>
+                                <Setter Property="BorderBrush"
+                                        TargetName="outerBorderChecked"
+                                        Value="{StaticResource OrdersListItemSelectedBrush}"/>
+                            </DataTrigger>
+
+                            
+                            
+
+                           
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            
+        </Style>
+    </UserControl.Resources>
+
+    <ContentControl d:DataContext="{x:Static core:StockOrdersListItemDesignModel.Instance}"
+                    Style="{StaticResource ContentStyle}">
+        <ContentControl.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCommand}"/>
+            
+            <!--NOTE: We don't need to call a select command manualy before 
+            open this order due to LeftClick event fires immediately before LeftDoubleClick -->
+            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenOrderCommand}"/>
+        </ContentControl.InputBindings>
+    </ContentControl>
+</UserControl>

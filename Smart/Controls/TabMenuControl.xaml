@@ -1,0 +1,2904 @@
+﻿<UserControl x:Class="Smart.TabMenuControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Smart"
+             xmlns:core ="clr-namespace:Smart.Core;assembly=Smart.Core"
+             mc:Ignorable="d" >
+
+    <Grid>
+
+        <!--TabMenu-->
+        <TabControl x:Name="Tabs" Style="{StaticResource MenuTabControl}">
+
+            <TabItem  Header="Заказы"
+                      x:Name="Orders"
+                      d:DataContext="{x:Static core:ManagerDesignModel.Instance}"
+                      DataContext="{Binding ManagerViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
+                      Style="{StaticResource MenuTabItem}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!-- Quick action -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--Separator-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Most used actions -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Separator -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Other actions & info -->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <!-- New Order -->
+                    <Button Grid.Column="0"
+                        Height="80"
+                        Margin="5 1 0 0"
+                        Content="новый заказ"
+                        Style="{StaticResource BigIconButton}"
+                        Tag="{StaticResource MDCartPlusIcon}"
+                        FontSize="{StaticResource FontSizeLargest}"
+                        Command="{Binding NewOrderCommand}"
+                                />
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   SnapsToDevicePixels="True"
+                                   Width="1"
+                                   Margin="5 5 5 4" 
+                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!-- Most used actions -->
+                    <Grid Grid.Column="2" VerticalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="редактировать"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPencilIcon}"
+                                HorizontalAlignment="Left" 
+                                Command="{Binding EditOrderCommand}"
+                                />
+
+                            <Button Content="печать"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPrintIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding PrintOrderCommand}"
+                                />
+
+                            <Button Content="удалить"
+                                Grid.Column="4"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDTrashBoxIcon}"
+                                HorizontalAlignment="Right"
+                                Padding="4 0 7 0"
+                                Command="{Binding DeleteOrderCommand}"
+                                />
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="информация о покупателе"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDIDIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding CustomerInfoOrderCommand}"
+                                />
+                            <Button Content="оплата"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource PaymentIcon}"
+                                HorizontalAlignment="Right"
+                                FontSize="{StaticResource FontSizeSemiLarge}"
+                                FontFamily="{StaticResource FA4Regular}"
+                                Padding="7 0 7 0"
+                                Command="{Binding PaymentOrderCommand}"       
+                                />
+
+                        </Grid>
+
+                        <Grid Grid.Row="2" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="информация о заказе"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource OrderInfoListIcon}"
+                                HorizontalAlignment="Left"
+                                FontSize="{StaticResource FontSizeSemiLarge}"
+                                FontFamily="{StaticResource FA5Solid}"
+                                Padding="8 0 7 0"
+                                Command="{Binding InfoOrderCommand}"
+                                />
+
+                            <Button Content="накладная"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource InvoiceIcon}"
+                                HorizontalAlignment="Right"
+                                FontSize="{StaticResource FontSizeSemiLarge}"
+                                FontFamily="{StaticResource FA5Solid}"
+                                Padding="7 0 7 0"
+                                Command="{Binding InvoiceOrderCommand}"
+                                />
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="3"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!-- Other actions -->
+                    <Grid Grid.Column="4" VerticalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Sort and Show-->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Sort-->
+                            <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="сортировать по:"
+                                               Margin="5 -3 5 0"
+                                             
+                                               />
+                                <ComboBox  SelectedIndex="{Binding SortingOrder, Converter={local:OrderSortByToIntValueConverter}}"
+                                              Style="{StaticResource ComboBoxCommon}" 
+                                              Height="25"
+                                              Width="150"
+                                              IsEditable="False"
+                                              Margin="0 -4 0 0" >
+                                    <ComboBoxItem  Content="номер заказа"/>
+                                    <ComboBoxItem  Content="дата создания"/>
+                                    <ComboBoxItem  Content="клиент"/>
+                                    <ComboBoxItem  Content="сумма заказа"/>
+                                    <ComboBoxItem  Content="статус оплаты"/>
+                                    <ComboBoxItem  Content="статус заказа"/>
+                                    <ComboBoxItem  Content="к оплате"/>
+
+
+                                </ComboBox>
+
+                                <ToggleButton Style="{StaticResource ToggleButtonDoubleIconStyle}"
+                                          Content="{StaticResource SortAscIcon}"
+                                          Tag="{StaticResource SortDescIcon}"
+                                          FontFamily="{StaticResource FA4Regular}"
+                                          FontSize="{StaticResource FontSizeSemiLarge}"
+                                          Width="25"
+                                          Margin="15 0 0 0"
+                                          Padding="-1 0 0 0"
+                                          IsChecked="{Binding SortingType, Mode=OneWay}"
+                                          Command="{Binding SortOrderCommand}"
+                                            />
+
+                            </StackPanel>
+
+                            <!-- Show -->
+                            <StackPanel Grid.Column="2"
+                                            Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="отобразить:"
+                                               Margin="0 -3 5 0" />
+                                <ComboBox  SelectedIndex="{Binding ShowingOrders, Converter={local:OrderShowToIntValueConverter}}"
+                                      Style="{StaticResource ComboBoxCommon}" 
+                                      Height="25"
+                                      Width="250"
+                                      IsEditable="False"
+                                      Margin="0 -4 0 0">
+                                    <ComboBoxItem  Content="все заказы"/>
+                                    <ComboBoxItem  Content="активные заказы"/>
+                                    <ComboBoxItem  Content="новые заказы"/>
+                                    <ComboBoxItem  Content="обрабатываются менеджером"/>
+                                    <ComboBoxItem  Content="обрабатываются складом"/>
+                                    <ComboBoxItem  Content="комплектуются"/>
+                                    <ComboBoxItem  Content="отклоненные складом"/>
+                                    <ComboBoxItem  Content="отгруженные со склада"/>
+                                    <ComboBoxItem  Content="переданные в службу доставки"/>
+                                    <ComboBoxItem  Content="доставляются"/>
+                                    <ComboBoxItem  Content="доставленные"/>
+                                    <ComboBoxItem  Content="выполненные"/>
+                                    <ComboBoxItem  Content="отмененные"/>
+                                    <ComboBoxItem  Content="закрытые"/>
+                                    <ComboBoxItem  Content="ожидается оплата"/>
+                                    <ComboBoxItem  Content="оплачено"/>
+                                    <ComboBoxItem  Content="оплачено частично"/>
+                                    <ComboBoxItem  Content="платеж просрочен"/>
+                                    <ComboBoxItem  Content="возврат средств"/>
+                                </ComboBox>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                        <!--Info-->
+                        <Grid Grid.Row="1" Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+                            <!--Info icon-->
+                            <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Style="{StaticResource ManagerTabInfoIcon}"
+                                   Margin="0 0 5 0"
+                                   />
+
+                            <TextBlock Grid.Column="1"
+                                   Grid.Row="0"
+                                   Text="{Binding AllOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                   Style="{StaticResource TextBlockCommon}"
+                                   Foreground="{StaticResource BlueBrush}"
+                                   FontFamily="{StaticResource SegoeUIRegular}"
+                                   Margin="0 1 0 0"
+                                   ToolTip="{Binding AllOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Всего заказов}"
+                                   HorizontalAlignment="Center"
+                                   />
+
+                            <TextBlock Grid.Column="1"
+                                   Grid.Row="1"
+                                   Text="{Binding ActiveOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                   Style="{StaticResource TextBlockCommon}"
+                                   Foreground="{StaticResource GreenBrush}"
+                                   FontFamily="{StaticResource SegoeUIRegular}"
+                                   Margin="0 1 0 0"
+                                   ToolTip="{Binding ActiveOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Активных заказов}"
+                                  HorizontalAlignment="Center"
+                                   />
+
+                            <!--Separator-->
+                            <Rectangle Grid.Column="2"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="10 5 10 4" Stroke="{StaticResource SeparatorBrush}" />
+
+
+                            <!--New orders-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding NewOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Новых заказов}">
+                                <TextBlock Text="новых:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding NewOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource GreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!--Closed orders-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="4"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding ClosedOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Закрытых заказов}">
+
+                                <TextBlock Text="закрытых:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding ClosedOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkGreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!--Cancelled orders-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="5"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding CancelledOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Отмененных заказов}">
+                                <TextBlock Text="отмененных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding CancelledOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkRedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!--Rejected orders-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="6"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding RejectedOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Отклоненных заказов}">
+                                <TextBlock Text="отклоненных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding RejectedOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource RedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!--Procesing orders-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding ProcessingOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Заказов в обработке}">
+                                <TextBlock Text="обрабатывается:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding ProcessingOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                            </StackPanel>
+
+                            <!--Orders that is waiting for payment-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="4"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding PaymentWaitingOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Ожидающих оплату заказов}">
+                                <TextBlock Text="ожидает оплату:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding PaymentWaitingOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                            </StackPanel>
+
+                            <!--Payment overdue orders-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="5"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding OverdueOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Заказов с просроченным платежом}">
+                                <TextBlock Text="платеж просрочен:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding OverdueOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource RedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                            </StackPanel>
+
+                            <!--Deliverins orders-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="6"
+                                    Orientation="Horizontal" 
+                                    ToolTip="{Binding DeliveringOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Доставляется заказов}">
+                                <TextBlock Text="доставляется:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding DeliveringOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+
+                        </Grid>
+
+
+                    </Grid>
+
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem  Header="Склад"
+                      x:Name="Stock"
+                      d:DataContext="{x:Static core:StockDesignModel.Instance}"
+                      DataContext="{Binding StockViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
+                      Style="{StaticResource MenuTabItem}">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!--Categories-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--Separator-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--Category selector-->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Stock Orders -->
+                    <Grid Grid.Column="0" 
+                          Visibility="{Binding CurrentCategory, Converter={local:StockCategoryToVisibilityValueConverter}, ConverterParameter=0}">
+
+
+                        <Grid.ColumnDefinitions>
+                            <!-- Most used actions -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Separator -->
+                            <ColumnDefinition Width="Auto"/>
+
+                            <!-- Other actions & info -->
+                            <ColumnDefinition Width="Auto"/>
+
+                        </Grid.ColumnDefinitions>
+
+
+
+
+
+                        <!-- Most used actions -->
+                        <Grid Grid.Column="0" VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="отклонить"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDCancel}"
+                                HorizontalAlignment="Left" 
+                                Command="{Binding RejectOrderCommand}"
+                                />
+
+                                <Button Content="подтвердить"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDCheck}"
+                                HorizontalAlignment="Left" 
+                                Command="{Binding ApproveOrderCommand}"
+                                />
+
+                                <Button Content="отгрузить"
+                                Grid.Column="4"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDShip}"
+                                HorizontalAlignment="Right"
+                                Padding="5 0 7 0"
+                                Command="{Binding ShipOrderCommand}"
+                                />
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="информация о покупателе"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDIDIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding CustomerInfoOrderCommand}"
+                                />
+
+                                <Button Content="печать"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPrintIcon}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding PrintOrderCommand}"
+                                />
+
+                            </Grid>
+
+                            <Grid Grid.Row="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="информация о заказе"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource OrderInfoListIcon}"
+                                HorizontalAlignment="Left"
+                                FontSize="{StaticResource FontSizeSemiLarge}"
+                                FontFamily="{StaticResource FA5Solid}"
+                                Padding="8 0 7 0"
+                                Command="{Binding InfoOrderCommand}"
+                                />
+
+                                <Button Content="накладная"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource InvoiceIcon}"
+                                HorizontalAlignment="Right"
+                                FontSize="{StaticResource FontSizeSemiLarge}"
+                                FontFamily="{StaticResource FA5Solid}"
+                                Padding="7 0 7 0"
+                                Command="{Binding InvoiceOrderCommand}"
+                                />
+                            </Grid>
+
+                        </Grid>
+
+                        <!--Separator-->
+                        <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                        <!-- Other actions -->
+                        <Grid Grid.Column="2" VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!--Sort and Show-->
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Sort-->
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="сортировать по:"
+                                               Margin="5 -3 5 0"
+                                             
+                                               />
+                                    <ComboBox SelectedIndex="{Binding SortingOrder, Converter={local:OrderSortByToIntValueConverter}}"
+                                              Style="{StaticResource ComboBoxCommon}" 
+                                              Height="25"
+                                              Width="150"
+                                              IsEditable="False"
+                                              Margin="0 -4 0 0" >
+                                        <ComboBoxItem  Content="номер заказа"/>
+                                        <ComboBoxItem  Content="дата создания"/>
+                                        <ComboBoxItem  Content="клиент"/>
+                                        <ComboBoxItem  Content="сумма заказа"/>
+                                        <ComboBoxItem  Content="статус оплаты"/>
+                                        <ComboBoxItem  Content="статус заказа"/>
+
+
+                                    </ComboBox>
+
+                                    <ToggleButton Style="{StaticResource ToggleButtonDoubleIconStyle}"
+                                          Content="{StaticResource SortAscIcon}"
+                                          Tag="{StaticResource SortDescIcon}"
+                                          FontFamily="{StaticResource FA4Regular}"
+                                          FontSize="{StaticResource FontSizeSemiLarge}"
+                                          Width="25"
+                                          Margin="15 0 0 0"
+                                          Padding="-1 0 0 0"
+                                          IsChecked="{Binding SortingTypeOrders, Mode=OneWay}"
+                                          Command="{Binding SortOrderCommand}"
+                                            />
+
+                                </StackPanel>
+
+                                <!-- Show -->
+                                <StackPanel Grid.Column="2"
+                                        Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource TextBlockCommon}"
+                                           Text="отобразить:"
+                                           Margin="0 -3 5 0" />
+                                    <ComboBox SelectedIndex="{Binding ShowingOrders, Converter={local:StockOrderShowToIntValueConverter}}"
+                                      Style="{StaticResource ComboBoxCommon}" 
+                                      Height="25"
+                                      Width="250"
+                                      IsEditable="False"
+                                      Margin="0 -4 0 0">
+                                        <ComboBoxItem  Content="все заказы"/>
+                                        <ComboBoxItem  Content="новые заказы"/>
+                                        <ComboBoxItem  Content="комплектуются"/>
+                                        <ComboBoxItem  Content="отклоненные"/>
+                                        <ComboBoxItem  Content="отгруженные"/>
+                                        <ComboBoxItem  Content="переданные в службу доставки"/>
+
+                                    </ComboBox>
+
+                                </StackPanel>
+
+                            </Grid>
+
+                            <!--Info-->
+                            <Grid Grid.Row="1" Height="50">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+
+                                <!--Info icon-->
+                                <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Style="{StaticResource ManagerTabInfoIcon}"
+                                   Margin="0 0 5 0"
+                                   />
+
+
+
+                                <!--New orders-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding NewOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Новых заказов}">
+                                    <TextBlock Text="новых:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding NewOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource GreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+                                <!--Shipped orders-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding ShippedOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Отгруженных}">
+                                    <TextBlock Text="отгруженных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding ShippedOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+                                <!--Rejected orders-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding RejectedOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Отклоненных заказов}">
+
+                                    <TextBlock Text="отклоненных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding RejectedOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource RedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+                                <!--Procesing orders (Approved)-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding ApprovedOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Комплектуется заказов}">
+                                    <TextBlock Text="комплектуется:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding ApprovedOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+
+
+                                <!--Transfered to the SC orders-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal" 
+                                    ToolTip="{Binding TransferedToSCOrdersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Переданных в службу доставки заказов}">
+                                    <TextBlock Text="передано в службу доставки:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding TransferedToSCOrdersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+
+                            </Grid>
+
+
+                        </Grid>
+
+
+
+                    </Grid>
+
+                    <!--Stock Products-->
+                    <Grid Width="Auto"
+                          Visibility="{Binding CurrentCategory, Converter={local:StockCategoryToVisibilityValueConverter}, ConverterParameter=1}">
+
+
+                        <Grid.ColumnDefinitions>
+                            <!-- Quick action -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!--Separator-->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Most used actions -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Separator -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Other actions & info -->
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+
+
+                        <!-- New Product -->
+                        <Button Grid.Column="0"
+                                Height="80"
+                                Width="70"
+                                Margin="5 1 0 0"
+                                Content="добавить товар"
+                                Style="{StaticResource BigIconButton}"
+                                Tag="{StaticResource MDPlusIcon}"
+                                FontSize="{StaticResource FontSizeLargest}"
+                                Command="{Binding NewProductCommand}"
+                                />
+
+                        <!--Separator-->
+                        <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   SnapsToDevicePixels="True"
+                                   Width="1"
+                                   Margin="5 5 5 4" 
+                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                        <!-- Most used actions -->
+                        <Grid Grid.Column="2" VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="редактировать"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDPencilIcon}"
+                                        HorizontalAlignment="Left" 
+                                        Command="{Binding EditProductCommand}"
+                                />
+
+                                <Button Content="удалить"
+                                        Grid.Column="2"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDTrashBoxIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding DeleteProductCommand}"
+                                />
+
+                               
+
+                               
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="информация о поставщике"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDIDIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding SupplierInfoProductCommand}"
+                                />
+                                
+
+                            </Grid>
+
+                            <Grid Grid.Row="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="информация о товаре"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDInformationCircleFilledIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding InfoProductCommand}"
+                                />
+                                <Button Content="заказы"
+                                        Grid.Column="2"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDListBulletIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding OrdersProductCommand}"
+                                />
+
+
+                            </Grid>
+
+                        </Grid>
+
+                        <!--Separator-->
+                        <Rectangle Grid.Column="3"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                        <!-- Other actions -->
+                        <Grid Grid.Column="4" VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!--Sort and Show-->
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Sort-->
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="сортировать по:"
+                                               Margin="5 -3 5 0"
+                                             
+                                               />
+                                    <ComboBox  SelectedIndex="{Binding ProductSortingOrder, Converter={local:ProductSortByToIntValueConverter}}"
+                                              Style="{StaticResource ComboBoxCommon}" 
+                                              Height="25"
+                                              Width="150"
+                                              IsEditable="False"
+                                              Margin="0 -4 0 0" >
+                                        <ComboBoxItem  Content="артикул"/>
+                                        <ComboBoxItem  Content="стоимость"/>
+                                        <ComboBoxItem  Content="наименованиe"/>
+                                        <ComboBoxItem  Content="количество"/>
+                                        <ComboBoxItem  Content="продаваемость"/>
+                                        <ComboBoxItem  Content="дата создания"/>
+                                        <ComboBoxItem  Content="поставщик"/>
+
+                                    </ComboBox>
+
+                                    <ToggleButton Style="{StaticResource ToggleButtonDoubleIconStyle}"
+                                          Content="{StaticResource SortAscIcon}"
+                                          Tag="{StaticResource SortDescIcon}"
+                                          FontFamily="{StaticResource FA4Regular}"
+                                          FontSize="{StaticResource FontSizeSemiLarge}"
+                                          Width="25"
+                                          Margin="15 0 0 0"
+                                          Padding="-1 0 0 0"
+                                          IsChecked="{Binding SortingTypeProducts, Mode=OneWay}"
+                                          Command="{Binding SortProductCommand}"
+                                            />
+
+                                </StackPanel>
+
+                                <!-- Show -->
+                                <StackPanel Grid.Column="2"
+                                            Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="отобразить:"
+                                               Margin="0 -3 5 0" />
+                                    <ComboBox  SelectedIndex="{Binding ShowingProducts, Converter={local:ProductShowToIntValueConverter}}"
+                                      Style="{StaticResource ComboBoxCommon}" 
+                                      Height="25"
+                                      Width="250"
+                                      IsEditable="False"
+                                      Margin="0 -4 0 0">
+                                        <ComboBoxItem  Content="все товары"/>
+                                        <ComboBoxItem  Content="акционные"/>
+                                        <ComboBoxItem  Content="заканчиваются на складе"/>
+                                        <ComboBoxItem  Content="отсутствуют на складе"/>
+                                        <ComboBoxItem  Content="ожидается поставка"/>
+                                    </ComboBox>
+
+                                </StackPanel>
+
+                            </Grid>
+
+                            <!--Info-->
+                            <Grid Grid.Row="1" Height="50" HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                                <!--Info icon-->
+                                <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Style="{StaticResource ManagerTabInfoIcon}"
+                                   Margin="0 0 5 0"
+                                   />
+
+
+
+                                <!--All products-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding AllProductsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Всего товаров}">
+                                    <TextBlock Text="всего:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding AllProductsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+                                <!--End in stock products-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding EndingProductsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Заканчивается на складе товаров}">
+
+                                    <TextBlock Text="заканчиваются на складе:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding EndingProductsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource RedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+                                <!--Absent products-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding AbsentProductsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Отсутствует на складе товаров}">
+                                    <TextBlock Text="нет на складе:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding AbsentProductsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkRedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+                                
+
+                                <!--Discounting products-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding DiscountProductsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Участвующих в акциях товаров}">
+                                    <TextBlock Text="участвуют в акциях:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding DiscountProductsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource GreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+                                <!--Waiting for supply products-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding SupplyWaitingProductsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Ожидающих поставку товаров}">
+                                    <TextBlock Text="ожидается поставка:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding SupplyWaitingProductsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+                               
+
+
+                            </Grid>
+
+
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Stock Supplies-->
+                    <Grid Width="Auto"
+                          Visibility="{Binding CurrentCategory, Converter={local:StockCategoryToVisibilityValueConverter}, ConverterParameter=2}">
+
+
+                        <Grid.ColumnDefinitions>
+                            <!-- Quick action -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!--Separator-->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Most used actions -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Separator -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Other actions & info -->
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+
+
+                        <!-- New Product -->
+                        <Button Grid.Column="0"
+                                Height="80"
+                                Width="75"
+                                Margin="5 1 0 0"
+                                Content="добавить поставку"
+                                Style="{StaticResource BigIconButton}"
+                                Tag="{StaticResource MDPlusIcon}"
+                                FontSize="{StaticResource FontSizeLargest}"
+                                Command="{Binding NewSupplyCommand}"
+                                />
+
+                        <!--Separator-->
+                        <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   SnapsToDevicePixels="True"
+                                   Width="1"
+                                   Margin="5 5 5 4" 
+                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                        <!-- Most used actions -->
+                        <Grid Grid.Column="2" VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="редактировать"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDPencilIcon}"
+                                        HorizontalAlignment="Left" 
+                                        Command="{Binding EditSupplyCommand}"
+                                />
+
+                                <Button Content="удалить"
+                                        Grid.Column="2"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDTrashBoxIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding DeleteSupplyCommand}"
+                                />
+
+                                <Button Content="товары"
+                                        Grid.Column="4"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDBoxIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding ProductsSupplyCommand}"
+                                />
+
+
+
+
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="информация о поставщике"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDIDIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding SupplierInfoSupplyCommand}"
+                                />
+                                <Button Content="оплата"
+                                        Grid.Column="3"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource PaymentIcon}"
+                                        HorizontalAlignment="Right"
+                                        FontSize="{StaticResource FontSizeSemiLarge}"
+                                        FontFamily="{StaticResource FA4Regular}"
+                                        Padding="7 0 7 0"
+                                        Command="{Binding PaymentSupplyCommand}"
+                                />
+
+
+                            </Grid>
+
+                            <Grid Grid.Row="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="информация о поставке"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDInformationCircleFilledIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding InfoSupplyCommand}"
+                                />
+                                <Button Content="накладная"
+                                        Grid.Column="2"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource InvoiceIcon}"
+                                        HorizontalAlignment="Right"
+                                        FontSize="{StaticResource FontSizeSemiLarge}"
+                                        FontFamily="{StaticResource FA5Solid}"
+                                        Padding="7 0 7 0"
+                                        Command="{Binding InvoiceSupplyCommand}"
+                                />
+
+
+                            </Grid>
+
+                        </Grid>
+
+                        <!--Separator-->
+                        <Rectangle Grid.Column="3"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                        <!-- Other actions -->
+                        <Grid Grid.Column="4" VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!--Sort and Show-->
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Sort-->
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="сортировать по:"
+                                               Margin="5 -3 5 0"
+                                             
+                                               />
+                                    <ComboBox  SelectedIndex="{Binding SupplySortingOrder, Converter={local:SupplySortByToIntValueConverter}}"
+                                              Style="{StaticResource ComboBoxCommon}" 
+                                              Height="25"
+                                              Width="150"
+                                              IsEditable="False"
+                                              Margin="0 -4 0 0" >
+                                        <ComboBoxItem  Content="номер поставки"/>
+                                        <ComboBoxItem  Content="дата создания"/>
+                                        <ComboBoxItem  Content="сумма"/>
+                                        <ComboBoxItem  Content="поставщик"/>
+                                        <ComboBoxItem  Content="статус оплаты"/>
+                                        <ComboBoxItem  Content="статус поставки"/>
+
+                                    </ComboBox>
+
+                                    <ToggleButton Style="{StaticResource ToggleButtonDoubleIconStyle}"
+                                          Content="{StaticResource SortAscIcon}"
+                                          Tag="{StaticResource SortDescIcon}"
+                                          FontFamily="{StaticResource FA4Regular}"
+                                          FontSize="{StaticResource FontSizeSemiLarge}"
+                                          Width="25"
+                                          Margin="15 0 0 0"
+                                          Padding="-1 0 0 0"
+                                          IsChecked="{Binding SortingTypeSupplies, Mode=OneWay}"
+                                          Command="{Binding SortSupplyCommand}"
+                                            />
+
+                                </StackPanel>
+
+                                <!-- Show -->
+                                <StackPanel Grid.Column="2"
+                                            Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="отобразить:"
+                                               Margin="0 -3 5 0" />
+                                    <ComboBox  SelectedIndex="{Binding ShowingSupplies, Converter={local:SupplyShowToIntValueConverter}}"
+                                      Style="{StaticResource ComboBoxCommon}" 
+                                      Height="25"
+                                      Width="190"
+                                      IsEditable="False"
+                                      Margin="0 -4 0 0">
+                                        <ComboBoxItem  Content="все поставки"/>
+                                        <ComboBoxItem  Content="новые поставки"/>
+                                        <ComboBoxItem  Content="ожидаются"/>
+                                        <ComboBoxItem  Content="выполненные"/>
+                                        <ComboBoxItem  Content="отмененные"/>
+                                        <ComboBoxItem  Content="оплаченные"/>
+                                        <ComboBoxItem  Content="оплаченные частично"/>
+                                        <ComboBoxItem  Content="ожидается оплата"/>
+                                        <ComboBoxItem  Content="платеж просрочен"/>
+                                    </ComboBox>
+
+                                </StackPanel>
+
+                            </Grid>
+
+                            <!--Info-->
+                            <Grid Grid.Row="1" Height="50" HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                                <!--Info icon-->
+                                <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Style="{StaticResource ManagerTabInfoIcon}"
+                                   Margin="0 0 5 0"
+                                   />
+
+
+
+                                <!--All supplies-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding AllSuppliesCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Всего поставок}">
+                                    <TextBlock Text="всего:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding AllSuppliesCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+                                <!--Done supplies-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding DoneSuppliesCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Выполненных поставок}">
+
+                                    <TextBlock Text="выполненных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding DoneSuppliesCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkGreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+                                <!--Cancelled supplies-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="4"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding CancelledSuppliesCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Отмененных поставок}">
+                                    <TextBlock Text="отмененных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding CancelledSuppliesCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkRedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+
+                                <!--Payment overdue supplies-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding PaymentOverdueSuppliesCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Поставок с просроченным платежом}">
+                                    <TextBlock Text="платеж просрочен:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding PaymentOverdueSuppliesCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkRedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+
+                                <!--New supplies-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding NewSuppliesCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Новых поставок}">
+                                    <TextBlock Text="новых:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding NewSuppliesCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource GreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+                                <!--Waiting-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding WaitingSuppliesCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Ожидается поставок}">
+                                    <TextBlock Text="ожидается:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding WaitingSuppliesCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+                                <!--Waiting for payment-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding WaitingForPaymentSuppliesCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Ожидающих оплату поставок}">
+                                    <TextBlock Text="ожидается оплата:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding WaitingForPaymentSuppliesCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+
+
+
+                            </Grid>
+
+
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Stock WriteOffs-->
+                    <Grid Width="Auto"
+                          Visibility="{Binding CurrentCategory, Converter={local:StockCategoryToVisibilityValueConverter}, ConverterParameter=3}">
+
+
+                        <Grid.ColumnDefinitions>
+                            <!-- Quick action -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!--Separator-->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Most used actions -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Separator -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Other actions & info -->
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+
+
+                        <!-- New Write-off -->
+                        <Button Grid.Column="0"
+                                Height="80"
+                                Width="75"
+                                Margin="5 1 0 0"
+                                Content="добавить списание"
+                                Style="{StaticResource BigIconButton}"
+                                Tag="{StaticResource MDPlusIcon}"
+                                FontSize="{StaticResource FontSizeLargest}"
+                                Command="{Binding NewWriteOffCommand}"
+                                />
+
+                        <!--Separator-->
+                        <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   SnapsToDevicePixels="True"
+                                   Width="1"
+                                   Margin="5 5 5 4" 
+                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                        <!-- Most used actions -->
+                        <Grid Grid.Column="2" VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                    
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="редактировать"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDPencilIcon}"
+                                        HorizontalAlignment="Left" 
+                                        Command="{Binding EditWriteOffCommand}"
+                                />
+
+                                <Button Content="удалить"
+                                        Grid.Column="2"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDTrashBoxIcon}"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding DeleteWriteOffCommand}"
+                                />
+
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="информация о списании"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDInformationCircleFilledIcon}"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding InfoWriteOffCommand}"
+                                />
+
+                            </Grid>
+
+                            <Grid Grid.Row="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+
+                                </Grid.ColumnDefinitions>
+
+                                <Button Content="товары"
+                                        Grid.Column="2"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource MDBoxIcon}"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding ProductsWriteOffCommand}"
+                                />
+                                
+                                
+                                <Button Content="накладная"
+                                        Grid.Column="0"
+                                        Style="{StaticResource SmallIconButton}"
+                                        Tag="{StaticResource InvoiceIcon}"
+                                        HorizontalAlignment="Left"
+                                        FontSize="{StaticResource FontSizeSemiLarge}"
+                                        FontFamily="{StaticResource FA5Solid}"
+                                        Padding="7 0 7 0"
+                                        Command="{Binding InvoiceWriteOffCommand}"
+                                />
+
+
+                            </Grid>
+
+                        </Grid>
+
+                        <!--Separator-->
+                        <Rectangle Grid.Column="3"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                        <!-- Other actions -->
+                        <Grid Grid.Column="4" VerticalAlignment="Center" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!--Sort and Show-->
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Sort-->
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="сортировать по:"
+                                               Margin="5 -3 5 0"
+                                             
+                                               />
+                                    <ComboBox  SelectedIndex="{Binding WriteOffSortingOrder, Converter={local:WriteOffSortByToIntValueConverter}}"
+                                              Style="{StaticResource ComboBoxCommon}" 
+                                              Height="25"
+                                              Width="150"
+                                              IsEditable="False"
+                                              Margin="0 -4 0 0" >
+                                        <ComboBoxItem  Content="номер списания"/>
+                                        <ComboBoxItem  Content="дата создания"/>
+                                        <ComboBoxItem  Content="сумма"/>
+                                        <ComboBoxItem  Content="количество позиций"/>
+                                        <ComboBoxItem  Content="статус списания"/>
+
+                                    </ComboBox>
+
+                                    <ToggleButton Style="{StaticResource ToggleButtonDoubleIconStyle}"
+                                          Content="{StaticResource SortAscIcon}"
+                                          Tag="{StaticResource SortDescIcon}"
+                                          FontFamily="{StaticResource FA4Regular}"
+                                          FontSize="{StaticResource FontSizeSemiLarge}"
+                                          Width="25"
+                                          Margin="15 0 0 0"
+                                          Padding="-1 0 0 0"
+                                          IsChecked="{Binding SortingTypeWriteOffs, Mode=OneWay}"
+                                          Command="{Binding SortWriteOffCommand}"
+                                            />
+
+                                </StackPanel>
+
+                                <!-- Show -->
+                                <StackPanel Grid.Column="2"
+                                            Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="отобразить:"
+                                               Margin="0 -3 5 0" />
+                                    <ComboBox  SelectedIndex="{Binding ShowingWriteOffs, Converter={local:WriteOffShowToIntValueConverter}}"
+                                      Style="{StaticResource ComboBoxCommon}" 
+                                      Height="25"
+                                      Width="150"
+                                      IsEditable="False"
+                                      Margin="0 -4 0 0">
+                                        <ComboBoxItem  Content="все списания"/>
+                                        <ComboBoxItem  Content="новые списания"/>
+                                        <ComboBoxItem  Content="выполненные"/>
+                                        <ComboBoxItem  Content="отмененные"/>
+                                    </ComboBox>
+
+                                </StackPanel>
+
+                            </Grid>
+
+                            <!--Info-->
+                            <Grid Grid.Row="1" Height="50" HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                                <!--Info icon-->
+                                <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Style="{StaticResource ManagerTabInfoIcon}"
+                                   Margin="0 0 5 0"
+                                   />
+
+
+
+                                <!--All write-offs-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding AllWriteOffsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Всего списаний}">
+                                    <TextBlock Text="всего:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding AllWriteOffsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+                                <!--Done write-offs-->
+                                <StackPanel Grid.Row="0"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding DoneWriteOffsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Выполненных списаний}">
+
+                                    <TextBlock Text="выполненных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding DoneWriteOffsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkGreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+                                <!--Cancelled write-offs-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding CancelledWriteOffsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Отмененных списаний}">
+                                    <TextBlock Text="отмененных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding CancelledWriteOffsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkRedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                                </StackPanel>
+
+
+                                
+
+
+                                <!--New write-offs-->
+                                <StackPanel Grid.Row="1"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding NewWriteOffsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Новых списаний}">
+                                    <TextBlock Text="новых:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                    <TextBlock Text="{Binding NewWriteOffsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource GreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 20 0"/>
+                                </StackPanel>
+
+                                
+
+
+
+
+                            </Grid>
+
+
+                        </Grid>
+
+                    </Grid>
+
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!--Catagory selector-->
+                    <ComboBox Grid.Column="2" Style="{StaticResource IconComboBox}"
+                              SelectedIndex="{Binding CurrentCategory, Converter={local:StockCategoryToIntValueConverter}}"
+                              Width="75"
+                              >
+                        <ComboBoxItem Content="заказы"
+                                      Tag="{StaticResource MDCartIcon}"
+                                      Style="{StaticResource BigIconComboBoxItem}"
+                                      />
+                        <ComboBoxItem Content="товары"
+                                      Tag="{StaticResource MDBoxIcon}"
+                                      Style="{StaticResource BigIconComboBoxItem}"
+                                      />
+                        <ComboBoxItem Content="поставки"
+                                      Tag="{StaticResource MDPlusMultipleIcon}"
+                                      Style="{StaticResource BigIconComboBoxItem}"
+                                      />
+                        <ComboBoxItem Content="списания"
+                                      Tag="{StaticResource MDOutcomeIcon}"
+                                      Style="{StaticResource BigIconComboBoxItem}"
+                                      />
+                    </ComboBox>
+                </Grid>
+
+
+            </TabItem>
+
+
+            <TabItem Header="Акции"
+                     Style="{StaticResource MenuTabItem}"
+                     x:Name="Discounts"
+                     d:DataContext="{x:Static core:DiscountsDesignModel.Instance}"
+                     DataContext="{Binding DiscountsViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
+                     >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!-- Quick action -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--Separator-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Most used actions -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Separator -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Other actions & info -->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <!-- New Discount -->
+                    <Button Grid.Column="0"
+                        Height="80"
+                        Margin="5 1 0 0"
+                        Content="новая акция"
+                        Style="{StaticResource BigIconButton}"
+                        Tag="{StaticResource MDTagAddIcon}"
+                        FontSize="{StaticResource FontSizeLargest}"
+                        Command="{Binding NewDiscountCommand}"
+                                />
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   SnapsToDevicePixels="True"
+                                   Width="1"
+                                   Margin="5 5 5 4" 
+                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!-- Most used actions -->
+                    <Grid Grid.Column="2" VerticalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="редактировать"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPencilIcon}"
+                                HorizontalAlignment="Left" 
+                                Command="{Binding EditDiscountCommand}"
+                                />
+
+
+                            <Button Content="удалить"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDTrashBoxIcon}"
+                                HorizontalAlignment="Right"
+                                Padding="4 0 7 0"
+                                Command="{Binding DeleteDiscountCommand}"
+                                />
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="информация об акции"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDInformationCircleFilledIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding InfoDiscountCommand}"
+                                />
+
+                        </Grid>
+
+                        <Grid Grid.Row="2" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="клиенты"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDUserMultipleIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding CustomersInfoDiscountCommand}"
+                                />
+
+                            <Button Content="товары"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDBoxIcon}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding ProductsInfoDiscountCommand}"
+                                />
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="3"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!-- Other actions -->
+                    <Grid Grid.Column="4" VerticalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Sort and Show-->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Sort-->
+                            <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="сортировать по:"
+                                               Margin="5 -3 5 0"
+                                             
+                                               />
+                                <ComboBox  SelectedIndex="{Binding DiscountSortBy, Converter={local:DiscountSortByToIntValueConverter}}"
+                                              Style="{StaticResource ComboBoxCommon}" 
+                                              Height="25"
+                                              Width="150"
+                                              IsEditable="False"
+                                              Margin="0 -4 0 0" >
+                                    <ComboBoxItem  Content="наименование"/>
+                                    <ComboBoxItem  Content="дата начала"/>
+                                    <ComboBoxItem  Content="дата завершения"/>
+                                    <ComboBoxItem  Content="дата создания"/>
+                                    <ComboBoxItem  Content="клиенты"/>
+                                    <ComboBoxItem  Content="товары"/>
+                                    <ComboBoxItem  Content="тип"/>
+                                    <ComboBoxItem  Content="процент скидки"/>
+                                    <ComboBoxItem  Content="мин. количество"/>
+
+
+                                </ComboBox>
+
+                                <ToggleButton Style="{StaticResource ToggleButtonDoubleIconStyle}"
+                                          Content="{StaticResource SortAscIcon}"
+                                          Tag="{StaticResource SortDescIcon}"
+                                          FontFamily="{StaticResource FA4Regular}"
+                                          FontSize="{StaticResource FontSizeSemiLarge}"
+                                          Width="25"
+                                          Margin="15 0 0 0"
+                                          Padding="-1 0 0 0"
+                                          IsChecked="{Binding SortingType, Mode=OneWay}"
+                                          Command="{Binding SortDiscountCommand}"
+                                            />
+
+                            </StackPanel>
+
+                            <!-- Show -->
+                            <StackPanel Grid.Column="2"
+                                            Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="отобразить:"
+                                               Margin="0 -3 5 0" />
+                                <ComboBox  SelectedIndex="{Binding DiscountShow, Converter={local:DiscountShowToIntValueConverter}}"
+                                      Style="{StaticResource ComboBoxCommon}" 
+                                      Height="25"
+                                      Width="180"
+                                      IsEditable="False"
+                                      Margin="0 -4 0 0">
+                                    <ComboBoxItem  Content="все акции"/>
+                                    <ComboBoxItem  Content="активные"/>
+                                    <ComboBoxItem  Content="неактивные"/>
+                                    <ComboBoxItem  Content="скидочные"/>
+                                    <ComboBoxItem  Content="подарочные"/>
+                                    <ComboBoxItem  Content="персональные"/>
+                                    <ComboBoxItem  Content="общие"/>
+                                    <ComboBoxItem  Content="на все товары"/>
+                                    <ComboBoxItem  Content="на некоторые товары"/>
+                                </ComboBox>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                        <!--Info-->
+                        <Grid Grid.Row="1" Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+                            <!--Info icon-->
+                            <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Style="{StaticResource ManagerTabInfoIcon}"
+                                   Margin="0 0 5 0"
+                                   />
+
+
+
+                            <!-- All Discounts-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="1"
+                                        Grid.RowSpan="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding AllDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Всего акций}">
+                                <TextBlock Text="всего:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding AllDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+                            
+                            <!-- Active Discounts-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding ActiveDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Активных акций}">
+                                <TextBlock Text="активных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding ActiveDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource GreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- InActive Discounts-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding InactiveDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Неактивных акций}">
+                                <TextBlock Text="неактивных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding InactiveDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- All Products Discounts-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding AllProductsDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Акций на все товары}">
+                                <TextBlock Text="на все товары:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding AllProductsDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+                            
+                            <!-- Single Products Discounts-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding SingleProductsDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Акций на некоторые товары}">
+                                <TextBlock Text="на некоторые товары:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding SingleProductsDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Personal Discounts-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="5"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding PersonalDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Персональных акций}">
+                                <TextBlock Text="персональных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding PersonalDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Public Discounts-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="5"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding PublicDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Общих акций}">
+                                <TextBlock Text="общих:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding PublicDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Price Discounts-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="4"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding PriceDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Скидочных акций}">
+                                <TextBlock Text="скидочных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding PriceDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Gift Discounts-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="4"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding GiftDiscountsCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Подарочных акций}">
+                                <TextBlock Text="подарочных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding GiftDiscountsCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+                            
+                        </Grid>
+
+
+                    </Grid>
+
+
+                </Grid>
+                
+            </TabItem>
+
+
+            <TabItem Header="Клиенты"
+                      x:Name="Customers"
+                      d:DataContext="{x:Static core:CustomersDesignModel.Instance}"
+                      DataContext="{Binding CustomersViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
+                      Style="{StaticResource MenuTabItem}">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!-- Quick action -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--Separator-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Most used actions -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Separator -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Other actions & info -->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <!-- New customer -->
+                    <Button Grid.Column="0"
+                        Height="80"
+                        Margin="5 1 0 0"
+                        Content="новый клиент"
+                        Style="{StaticResource BigIconButton}"
+                        Tag="{StaticResource MDUserPlusIcon}"
+                        FontSize="{StaticResource FontSizeLargest}"
+                        Command="{Binding NewDiscountCommand}"
+                                />
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   SnapsToDevicePixels="True"
+                                   Width="1"
+                                   Margin="5 5 5 4" 
+                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!-- Most used actions -->
+                    <Grid Grid.Column="2" VerticalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="редактировать"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPencilIcon}"
+                                HorizontalAlignment="Left" 
+                                Command="{Binding EditCustomerCommand}"
+                                />
+
+
+                            <Button Content="удалить"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDTrashBoxIcon}"
+                                HorizontalAlignment="Right"
+                                Padding="4 0 7 0"
+                                Command="{Binding DeleteCustomerCommand}"
+                                />
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="информация о клиенте"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDInformationCircleFilledIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding InfoCustomerCommand}"
+                                />
+
+
+                            <Button Content="печать"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPrintIcon}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding PrintCustomerCommand}"
+                                />
+
+
+                        </Grid>
+
+                        <Grid Grid.Row="2" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="Auto"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="заказы"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDCartIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding InfoOrdersCustomerCommand}"
+                                />
+
+                            <Button Content="акции"
+                                Grid.Column="3"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDTagIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding InfoDiscountsCustomerCommand}"
+                                />
+                            
+                            <Button Content="платежи"
+                                Grid.Column="45"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource PaymentIcon}"
+                                FontFamily="{StaticResource FA4Regular}"
+                                FontSize="{StaticResource FontSizeSemiLarge}"
+                                HorizontalAlignment="Right"
+                                Padding="7 0 7 0"
+                                Command="{Binding InfoPaymentsCustomerCommand}"
+                                />
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="3"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!-- Other actions -->
+                    <Grid Grid.Column="4" VerticalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Sort and Show-->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Sort-->
+                            <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="сортировать по:"
+                                               Margin="5 -3 5 0"
+                                             
+                                               />
+                                <ComboBox  SelectedIndex="{Binding CustomerSortBy, Converter={local:CustomerSortByToIntValueConverter}}"
+                                              Style="{StaticResource ComboBoxCommon}" 
+                                              Height="25"
+                                              Width="200"
+                                              IsEditable="False"
+                                              Margin="0 -4 0 0" >
+                                    <ComboBoxItem  Content="наименование"/>
+                                    <ComboBoxItem  Content="руководитель"/>
+                                    <ComboBoxItem  Content="кол-во активных заказов"/>
+                                    <ComboBoxItem  Content="рейтинг"/>
+                                    <ComboBoxItem  Content="дебит. задолженность"/>
+                                    <ComboBoxItem  Content="юр. статус"/>
+
+
+                                </ComboBox>
+
+                                <ToggleButton Style="{StaticResource ToggleButtonDoubleIconStyle}"
+                                          Content="{StaticResource SortAscIcon}"
+                                          Tag="{StaticResource SortDescIcon}"
+                                          FontFamily="{StaticResource FA4Regular}"
+                                          FontSize="{StaticResource FontSizeSemiLarge}"
+                                          Width="25"
+                                          Margin="15 0 0 0"
+                                          Padding="-1 0 0 0"
+                                          IsChecked="{Binding SortingType, Mode=OneWay}"
+                                          Command="{Binding SortCustomersCommand}"
+                                            />
+
+                            </StackPanel>
+
+                            <!-- Show -->
+                            <StackPanel Grid.Column="2"
+                                            Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="отобразить:"
+                                               Margin="0 -3 5 0" />
+                                <ComboBox  SelectedIndex="{Binding CustomerShow, Converter={local:CustomerShowToIntValueConverter}}"
+                                      Style="{StaticResource ComboBoxCommon}" 
+                                      Height="25"
+                                      Width="200"
+                                      IsEditable="False"
+                                      Margin="0 -4 0 0">
+                                    <ComboBoxItem  Content="все клиенты"/>
+                                    <ComboBoxItem  Content="активные"/>
+                                    <ComboBoxItem  Content="неактивные"/>
+                                    <ComboBoxItem  Content="полож. рейтинг"/>
+                                    <ComboBoxItem  Content="негат. рейтинг"/>
+                                    <ComboBoxItem  Content="с акт. заказами"/>
+                                    <ComboBoxItem  Content="без акт. заказов"/>
+                                    <ComboBoxItem  Content="физ. лица"/>
+                                    <ComboBoxItem  Content="юр. лица"/>
+                                    <ComboBoxItem  Content="с дебит. задолженностью"/>
+                                </ComboBox>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                        <!--Info-->
+                        <Grid Grid.Row="1" Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+                            <!--Info icon-->
+                            <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Style="{StaticResource ManagerTabInfoIcon}"
+                                   Margin="0 0 5 0"
+                                   />
+
+
+
+                            <!-- All customers-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="1"
+                                        Grid.RowSpan="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding AllCustomersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Всего клиентов}">
+                                <TextBlock Text="всего:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding AllCustomersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Active customers-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding ActiveCustomersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Активных клиентов}">
+                                <TextBlock Text="активных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding ActiveCustomersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource GreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Inactive customers-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding InactiveCustomersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Неактивных клиентов}">
+                                <TextBlock Text="неактивных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding InactiveCustomersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkRedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Физ лица-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding IndividualCustomersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Физических лиц}">
+                                <TextBlock Text="физ. лиц:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding IndividualCustomersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!--Artificial customers-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding ArtificialCustomersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Юридических лиц}">
+                                <TextBlock Text="юр. лиц:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding ArtificialCustomersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Positive rating-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="4"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding PositiveRatingCustomersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Клиентов с позитивным рейтингом}">
+                                <TextBlock Text="с поз. рейтингом:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding PositiveRatingCustomersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Negative rating-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="4"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding NegativeRatingCustomersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Клиентов с отрицательным рейтингом}">
+                                <TextBlock Text="с отр. рейтингом:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding NegativeRatingCustomersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource RedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Debtors-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="5"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding DebtorsCustomersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Клиентов с дебиторской задолженностью}">
+                                <TextBlock Text="с дебит. задолженностью:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding DebtorsCustomersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource RedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+
+
+                        </Grid>
+
+
+                    </Grid>
+
+
+                </Grid>
+
+
+            </TabItem>
+
+            <TabItem Header="Поставщики"
+                      x:Name="Suppliers"
+                      d:DataContext="{x:Static core:SuppliersDesignModel.Instance}"
+                      DataContext="{Binding SuppliersViewModel, Source={x:Static local:ViewModelLocator.Instance}}"
+                      Style="{StaticResource MenuTabItem}">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!-- Quick action -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!--Separator-->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Most used actions -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Separator -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Other actions & info -->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <!-- New supplier -->
+                    <Button Grid.Column="0"
+                        Height="80"
+                            Width="80"
+                        Margin="5 1 0 0"
+                        Content="новый поставщик"
+                        Style="{StaticResource BigIconButton}"
+                        Tag="{StaticResource MDUserPlusIcon}"
+                        FontSize="{StaticResource FontSizeLargest}"
+                        Command="{Binding NewSupplierCommand}"
+                                />
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="1"
+                                   VerticalAlignment="Stretch"
+                                   SnapsToDevicePixels="True"
+                                   Width="1"
+                                   Margin="5 5 5 4" 
+                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!-- Most used actions -->
+                    <Grid Grid.Column="2" VerticalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="редактировать"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPencilIcon}"
+                                HorizontalAlignment="Left" 
+                                Command="{Binding EditSupplierCommand}"
+                                />
+
+
+                            <Button Content="удалить"
+                                Grid.Column="2"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDTrashBoxIcon}"
+                                HorizontalAlignment="Left"
+                                Padding="4 0 7 0"
+                                Command="{Binding DeleteSupplierCommand}"
+                                />
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="информация о поставщике"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDInformationCircleFilledIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding InfoSupplierCommand}"
+                                />
+
+
+                         
+
+
+                        </Grid>
+
+                        <Grid Grid.Row="2" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="Auto"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="поставки"
+                                Grid.Column="0"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPlusMultipleIcon}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding InfoSupplySupplierCommand}"
+                                />
+
+                            
+
+                            <Button Content="платежи"
+                                Grid.Column="3"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource PaymentIcon}"
+                                FontFamily="{StaticResource FA4Regular}"
+                                FontSize="{StaticResource FontSizeSemiLarge}"
+                                HorizontalAlignment="Right"
+                                Padding="7 0 7 0"
+                                Command="{Binding InfoPaymentsSupplierCommand}"
+                                />
+
+                            <Button Content="печать"
+                                Grid.Column="6"
+                                Style="{StaticResource SmallIconButton}"
+                                Tag="{StaticResource MDPrintIcon}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding PrintSupplierCommand}"
+                                />
+
+
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Separator-->
+                    <Rectangle Grid.Column="3"
+                                   VerticalAlignment="Stretch"
+                                   Width="1" Margin="5 5 5 4" Stroke="{StaticResource SeparatorBrush}" />
+
+                    <!-- Other actions -->
+                    <Grid Grid.Column="4" VerticalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Sort and Show-->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Sort-->
+                            <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="сортировать по:"
+                                               Margin="5 -3 5 0"
+                                             
+                                               />
+                                <ComboBox  SelectedIndex="{Binding SupplierSortBy, Converter={local:SupplierSortByToIntValueConverter}}"
+                                              Style="{StaticResource ComboBoxCommon}" 
+                                              Height="25"
+                                              Width="200"
+                                              IsEditable="False"
+                                              Margin="0 -4 0 0" >
+                                    <ComboBoxItem  Content="наименование"/>
+                                    <ComboBoxItem  Content="руководитель"/>
+                                    <ComboBoxItem  Content="кол-во активных поставок"/>
+                                    <ComboBoxItem  Content="кредит. задолженность"/>
+                                    <ComboBoxItem  Content="юр. статус"/>
+
+
+                                </ComboBox>
+
+                                <ToggleButton Style="{StaticResource ToggleButtonDoubleIconStyle}"
+                                          Content="{StaticResource SortAscIcon}"
+                                          Tag="{StaticResource SortDescIcon}"
+                                          FontFamily="{StaticResource FA4Regular}"
+                                          FontSize="{StaticResource FontSizeSemiLarge}"
+                                          Width="25"
+                                          Margin="15 0 0 0"
+                                          Padding="-1 0 0 0"
+                                          IsChecked="{Binding SortingType, Mode=OneWay}"
+                                          Command="{Binding SortSupplierCommand}"
+                                            />
+
+                            </StackPanel>
+
+                            <!-- Show -->
+                            <StackPanel Grid.Column="2"
+                                            Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockCommon}"
+                                               Text="отобразить:"
+                                               Margin="0 -3 5 0" />
+                                <ComboBox  SelectedIndex="{Binding SupplierShow, Converter={local:SupplierShowToIntValueConverter}}"
+                                      Style="{StaticResource ComboBoxCommon}" 
+                                      Height="25"
+                                      Width="200"
+                                      IsEditable="False"
+                                      Margin="0 -4 0 0">
+                                    <ComboBoxItem  Content="все поставщики"/>
+                                    <ComboBoxItem  Content="активные"/>
+                                    <ComboBoxItem  Content="неактивные"/>
+                                    <ComboBoxItem  Content="с акт. поставками"/>
+                                    <ComboBoxItem  Content="без акт. поставок"/>
+                                    <ComboBoxItem  Content="физ. лица"/>
+                                    <ComboBoxItem  Content="юр. лица"/>
+                                    <ComboBoxItem  Content="с кред. задолженностью"/>
+                                </ComboBox>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                        <!--Info-->
+                        <Grid Grid.Row="1" Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+                            <!--Info icon-->
+                            <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Style="{StaticResource ManagerTabInfoIcon}"
+                                   Margin="0 0 5 0"
+                                   />
+
+
+
+                            <!-- All suppliers-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="1"
+                                        Grid.RowSpan="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding AllSuppliersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Всего поставщиков}">
+                                <TextBlock Text="всего:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding AllSuppliersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource BlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Active suppliers-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding ActiveSuppliersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Активных поставщиков}">
+                                <TextBlock Text="активных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding ActiveSuppliersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource GreenBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Inactive suppliers-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding InactiveSuppliersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Неактивных поставщиков}">
+                                <TextBlock Text="неактивных:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding InactiveSuppliersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource DarkRedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!-- Individual suppliers-->
+                            <StackPanel Grid.Row="0"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding IndividualSuppliersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Физических лиц}">
+                                <TextBlock Text="физ. лиц:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding IndividualSuppliersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            <!--Artificial customers-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal"
+                                        Margin="0 0 20 0"
+                                    ToolTip="{Binding ArtificialSuppliersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Юридических лиц}">
+                                <TextBlock Text="юр. лиц:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding ArtificialSuppliersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource SemiDarkBlueBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+                            
+                            <!-- Debtors-->
+                            <StackPanel Grid.Row="1"
+                                    Grid.Column="4"
+                                    Orientation="Horizontal"
+                                    ToolTip="{Binding CreditorsSuppliersCount, Converter={local:IntToIntStringValueConverter}, ConverterParameter=Поставщиков с кредиторской задолженностью}">
+                                <TextBlock Text="с кред. задолженностью:"
+                                       Style="{StaticResource TextBlockCommon}"/>
+                                <TextBlock Text="{Binding CreditorsSuppliersCount, Converter={local:IntToStringValueConverter}}"
+                                       Style="{StaticResource TextBlockCommon}"
+                                       Foreground="{StaticResource RedBrush}"
+                                       FontFamily="{StaticResource SegoeUIRegular}"
+                                       Margin="5 1 0 0"/>
+                            </StackPanel>
+
+
+
+                        </Grid>
+
+
+                    </Grid>
+
+
+                </Grid>
+
+
+            </TabItem>
+
+           
+            <TabItem Header="Платежи"
+                             Style="{StaticResource MenuTabItem}"/>
+            <TabItem Header="Отчеты"
+                             Style="{StaticResource MenuTabItem}"/>
+            <TabItem Header="Настройки"
+                             Style="{StaticResource MenuTabItem}"/>
+        </TabControl>
+    </Grid>
+</UserControl>

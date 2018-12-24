@@ -1,0 +1,500 @@
+﻿<UserControl x:Class="Smart.ProductsListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Smart"
+             xmlns:core="clr-namespace:Smart.Core;assembly=Smart.Core"
+             mc:Ignorable="d" 
+             Height="295"
+             Width="210"
+             MinHeight="295"
+             MinWidth="210"
+             >
+
+    <UserControl.Resources>
+        <Style x:Key="ContentStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Border x:Name="outerBorder"
+                                Margin="5"
+                                Background="{StaticResource WindowBackgroundBrush}" 
+                                BorderBrush="{StaticResource ProductsListItemNormalBrush}"
+                                BorderThickness="1"
+                                SnapsToDevicePixels="True">
+
+
+
+                            <!--Border for the Hover effect-->
+                            <Border x:Name="outerBorderHover"
+                                    Background="{StaticResource ProductsListItemTransparentHoverBrush}"
+                                    BorderBrush="{StaticResource ProductsListItemTransparentHoverBrush}"
+                                    BorderThickness="1"
+                                    SnapsToDevicePixels="True"
+                                    Margin="-1">
+
+                                <!--Border for the checked effect-->
+                                <Border x:Name="outerBorderChecked"
+                                            Background="Transparent" 
+                                            BorderBrush="Transparent"
+                                            BorderThickness="1"
+                                            SnapsToDevicePixels="True"
+                                            Margin="-1">
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <!--Artnumber-->
+                                            <RowDefinition Height="25"/>
+                                            <!--Spacing-->
+                                            <RowDefinition Height="10"/>
+                                            <!--An image-->
+                                            <RowDefinition Height="100"/>
+                                            <!--Separator-->
+                                            <RowDefinition Height="Auto"/>
+                                            <!--Titlte-->
+                                            <RowDefinition Height="Auto"/>
+                                            <!--Description-->
+                                            <RowDefinition Height="50"/>
+                                            <!--Separator-->
+                                            <RowDefinition Height="Auto"/>
+                                            <!--Prices-->
+                                            <RowDefinition Height="50"/>
+                                            <!--Spacing-->
+                                            <RowDefinition Height="*"/>
+                                            <!--Indicator-->
+                                            <RowDefinition Height="7"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!--ArtNumber & amount-->
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <!--ArtNumber-->
+                                                <ColumnDefinition Width="*"/>
+                                                <!--Amount-->
+                                                <ColumnDefinition Width="40"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!--Art Number-->
+                                            <StackPanel x:Name="artNumberPanel" Orientation="Horizontal" 
+                                                        HorizontalAlignment="Stretch">
+                                                <TextBlock Text="Арт. №:"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizeSmall}"
+                                                           Margin="10 0 5 0"/>
+                                                <TextBlock Text="{Binding ArtNumber}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizeSmall}"
+                                                           Foreground="{StaticResource ProductsListItemArtNumberBrush}"/>
+                                            </StackPanel>
+
+                                            <!--Amount & Request a supply-->
+                                            <Grid Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="40"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--Request a supply-->
+                                                <Border Grid.Column="0"
+                                                        x:Name="supplyRequest"
+                                                        BorderThickness="0"
+                                                        Background="{StaticResource MenuBackgroundBrush}"
+                                                        Width="{Binding ActualWidth, ElementName=artNumberPanel}"
+                                                        Visibility="Collapsed"
+                                                        Margin="{Binding ActualWidth, ElementName=artNumberPanel, Converter={local:WidthToNegativeMarginLeftValueConverter}}"
+                                                        >
+                                                    <Button Content="заказать поставку"
+                                                            Tag="{StaticResource MDPlusMultipleIcon}"
+                                                            Style="{StaticResource SmallIconButton}"
+                                                            Command="{Binding SupplyRequestCommand}"
+                                                            />
+
+                                                </Border>
+
+                                                <!--Amount-->
+                                                <Border Grid.Column="1"
+                                                    BorderThickness="0"
+                                                    Margin="0 -1 -1 0"
+                                                    Background="{Binding IsEnding, Converter={local:ProductEndingBoolToBrushValueConverter}}">
+                                                    <TextBlock Text="{Binding Amount, Converter={local:IntToStringValueConverter}}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           Foreground="{StaticResource ForegroundLightBrush}"
+                                                           FontSize="{StaticResource FontSizeSemiLarge}"
+                                                           HorizontalAlignment="Center"/>
+
+
+                                                </Border>
+
+                                                <Grid.Triggers>
+                                                    <EventTrigger RoutedEvent="MouseEnter">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                                               Storyboard.TargetName="supplyRequest"
+                                                                                               Duration="0">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                    <EventTrigger RoutedEvent="MouseLeave">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                                               Storyboard.TargetName="supplyRequest"
+                                                                                               Duration="0">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </Grid.Triggers>
+                                            </Grid>
+                                        </Grid>
+
+                                        <!--Image-->
+                                        <Grid  Grid.Row="2">
+                                            
+                                            <Border
+                                                Padding="5"
+                                                Background="{StaticResource WindowBackgroundBrush}"
+                                                >
+
+                                                <Image 
+                                                   Source="{Binding ThumbnailImageLocalPath, NotifyOnTargetUpdated=True}"
+                                                   Stretch="Uniform"
+                                                   local:FadeInImageOnLoadProperty.Value="True"
+                                                   />
+
+                                            </Border>
+
+                                            <!--Loading spinner-->
+                                            <TextBlock Style="{StaticResource SpinningText}"
+                                                       Text="{StaticResource MDSpinnerThirdIcon}"
+                                                       FontFamily="{StaticResource MaterialDesign}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       FontSize="{StaticResource FontSizeLarge}"
+                                                       Foreground="{StaticResource DarkBlueBrush}"
+                                                       Visibility="{Binding ImageLoaded, Converter={local:BooleanToVisibilityValueConverter}}"/>
+
+
+                                        </Grid>
+
+                                        <!--Discounts info-->
+                                        <Grid Grid.Row="2"
+                                              VerticalAlignment="Bottom"
+                                              HorizontalAlignment="Right"
+                                              Margin="0 0 10 10"
+                                              Visibility="{Binding DiscountCount, Converter={local:DiscountCountToVisibilityValueConverter}}">
+                                            <Border x:Name="discBorder"
+                                                    Width="25"
+                                                    Height="25"
+                                                    CornerRadius="15"
+                                                    BorderThickness="0"
+                                                    HorizontalAlignment="Left"
+                                                    Background="{StaticResource VeryLightGreyBrush}"/>
+                                            <TextBlock x:Name="discText"
+                                                       Text="акции"
+                                                       Style="{StaticResource TextBlockCommon}"
+                                                       Foreground="{StaticResource DarkGreenBrush}"
+                                                       TextAlignment="Left"
+                                                       Visibility="Collapsed"
+                                                       Margin="30 0 0 3"/>
+                                            <Border 
+                                                    Width="25"
+                                                    Height="25"
+                                                    CornerRadius="15"
+                                                    BorderThickness="0"
+                                                    HorizontalAlignment="Left"
+                                                    Background="{StaticResource DarkGreenBrush}">
+
+                                                <TextBlock Text="{Binding DiscountCount}"
+                                                       Style="{StaticResource TextBlockCommon}"
+                                                       Foreground="{StaticResource ForegroundLightBrush}"
+                                                       FontSize="{StaticResource FontSizeSemiLarge}"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="3 0 2 1"/>
+                                            </Border>
+
+
+                                            <Grid.Triggers>
+                                                <EventTrigger RoutedEvent="MouseEnter">
+                                                    <BeginStoryboard>
+                                                        <Storyboard >
+                                                            <DoubleAnimation Duration="0:0:0.2"
+                                                                             Storyboard.TargetProperty="(Border.Width)"
+                                                                             Storyboard.TargetName="discBorder"
+                                                                             To="80"/>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                                           Storyboard.TargetName="discText"
+                                                                                           Duration="0:0:0.2">
+                                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.19" Value="{x:Static Visibility.Visible}"/>
+
+                                                            </ObjectAnimationUsingKeyFrames>
+
+
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+
+                                                </EventTrigger>
+                                                <EventTrigger RoutedEvent="MouseLeave">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Duration="0:0:0.2"
+                                                                             Storyboard.TargetProperty="(Border.Width)"
+                                                                             Storyboard.TargetName="discBorder"
+                                                                             To="25"/>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                                           Storyboard.TargetName="discText"
+                                                                                           Duration="0:0:0.01">
+                                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.01" Value="{x:Static Visibility.Collapsed}"/>
+
+                                                            </ObjectAnimationUsingKeyFrames>
+
+
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+
+                                                </EventTrigger>
+                                            </Grid.Triggers>
+
+
+
+
+
+                                        </Grid>
+
+                                        <!--Separator-->
+                                        <Rectangle Grid.Row="3"
+                                                   HorizontalAlignment="Stretch"
+                                                   SnapsToDevicePixels="True"
+                                                   Height="1"
+                                                   Margin="30 0 30 5" 
+                                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                                        <!--Name-->
+                                        <TextBlock Grid.Row="4"
+                                                   Text="{Binding Name}"
+                                                   Style="{StaticResource TextBlockCommon}"
+                                                   HorizontalAlignment="Center"
+                                                   FontFamily="{StaticResource SegoeUIRegular}"
+                                                   Foreground="{StaticResource ForegroundDarkBlueBrush}"
+                                                   />
+
+                                        <!--Description-->
+                                        <TextBlock Grid.Row="5"
+                                                   Text="{Binding Description}"
+                                                   TextAlignment="Center"
+                                                   TextWrapping="Wrap"
+                                                   LineStackingStrategy="BlockLineHeight"
+                                                   LineHeight="12"
+                                                   Foreground="{StaticResource ForegroundDarkBrush}"
+                                                   FontFamily="{StaticResource SegoeUILight}"
+                                                   FontSize="{StaticResource FontSizeSmall}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="5 5 5 5" TextOptions.TextHintingMode="Fixed" TextTrimming="CharacterEllipsis"
+                                                  />
+
+                                        <!--Separator-->
+                                        <Rectangle Grid.Row="6"
+                                                   HorizontalAlignment="Stretch"
+                                                   SnapsToDevicePixels="True"
+                                                   Height="1"
+                                                   Margin="50 0 50 6" 
+                                                   Stroke="{StaticResource SeparatorBrush}" />
+
+                                        <!--Prices-->
+                                        <Grid Grid.Row="7">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <!--Wholesale USD-->
+                                            <StackPanel Grid.Column="0"
+                                                        Grid.Row="0"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Left"
+                                                        Margin="10 0 0 0">
+                                                <TextBlock Text="{Binding  WholeSalePriceUSD, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizeSemiLarge}"
+                                                           Foreground="{StaticResource GreyBrush}"
+                                                           />
+                                                <TextBlock Text="USD"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizeVerySmall}"
+                                                           Foreground="{StaticResource GreyBrush}"
+                                                           VerticalAlignment="Bottom"
+                                                           Margin="5 0 0 2"/>
+                                            </StackPanel>
+
+                                            <!--Wholesale UAH-->
+                                            <StackPanel Grid.Column="0"
+                                                        Grid.Row="1"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Left"
+                                                        Margin="10 0 0 0">
+                                                <TextBlock Text="{Binding  WholeSalePriceUAH, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizePreLarge}"
+                                                           Foreground="{StaticResource BlueBrush}"
+                                                           />
+                                                <TextBlock Text="UAH"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizeSmall}"
+                                                           VerticalAlignment="Bottom"
+                                                           Foreground="{StaticResource BlueBrush}"
+                                                           Margin="5 0 0 2"/>
+                                            </StackPanel>
+
+
+                                            <!--Price USD-->
+                                            <StackPanel Grid.Column="1"
+                                                        Grid.Row="0"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Right"
+                                                        Margin="0 0 10 0">
+                                                <TextBlock Text="{Binding  PriceUSD, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizeSemiLarge}"
+                                                           />
+                                                <TextBlock Text="USD"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizeVerySmall}"
+                                                           VerticalAlignment="Bottom"
+                                                           Margin="5 0 0 2"/>
+                                            </StackPanel>
+
+                                            <!--Price UAH-->
+                                            <StackPanel Grid.Column="1"
+                                                        Grid.Row="1"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Right"
+                                                        Margin="0 0 10 0">
+                                                <TextBlock Text="{Binding  PriceUAH, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizePreLarge}"
+                                                           Foreground="{StaticResource ForegroundDarkBlueBrush}"
+                                                           />
+                                                <TextBlock Text="UAH"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           FontSize="{StaticResource FontSizeSmall}"
+                                                           VerticalAlignment="Bottom"
+                                                           Foreground="{StaticResource ForegroundDarkBlueBrush}"
+                                                           Margin="5 0 0 2"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Indicator-->
+                                        <Border Grid.Row="9"
+                                                x:Name="indicator"
+                                                Height="7" Margin="-1 0 -1 -1"
+                                                BorderThickness="0"
+                                                Background="{Binding DiscountCount, Converter={local:DiscountCountToBrushValueConverter}}"
+                                                VerticalAlignment="Bottom"/>
+
+                                        <!--Indicator for hover-->
+                                        <Border Grid.Row="9"
+                                                x:Name="indicatorHover"
+                                                Height="7" Margin="-1 0 -1 -1"
+                                                BorderThickness="0"
+                                                Background="{StaticResource ProductsListItemTransparentHoverBrush}"
+                                                VerticalAlignment="Bottom"/>
+
+                                        <!--Indicator for checked-->
+                                        <Border Grid.Row="9"
+                                                x:Name="indicatorChecked"
+                                                Height="7" Margin="-1 0 -1 -1"
+                                                BorderThickness="0"
+                                                Background="{StaticResource ProductsListItemTransparentHoverBrush}"
+                                                VerticalAlignment="Bottom"/>
+
+
+
+
+
+                                    </Grid>
+
+                                </Border>
+
+                            </Border>
+
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+
+                                        <ColorAnimation Duration="0:0:0.2"
+                                                        To="{StaticResource ProductsListItemHover}"
+                                                        Storyboard.TargetProperty="Background.Color"
+                                                        Storyboard.TargetName="indicatorHover"
+                                            />
+                                        <ColorAnimation Duration="0:0:0.2"
+                                                        To="{StaticResource ProductsListItemHover}"
+                                                        Storyboard.TargetProperty="BorderBrush.Color"
+                                                        Storyboard.TargetName="outerBorderHover"
+                                            />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0.2"
+                                            To="{StaticResource ProductsListItemTransparentHover}"
+                                            Storyboard.TargetProperty="Background.Color"
+                                            Storyboard.TargetName="indicatorHover"
+                                            />
+                                        <ColorAnimation Duration="0:0:0.2"
+                                            To="{StaticResource ProductsListItemTransparentHover}"
+                                            Storyboard.TargetProperty="BorderBrush.Color"
+                                            Storyboard.TargetName="outerBorderHover"
+                                            />
+
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+
+
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Background" 
+                                        TargetName="indicatorChecked"
+                                        Value="{StaticResource ProductsListItemSelectedBrush}"/>
+                                <Setter Property="BorderBrush"
+                                        TargetName="outerBorderChecked"
+                                        Value="{StaticResource ProductsListItemSelectedBrush}"/>
+                            </DataTrigger>
+
+
+
+                        </ControlTemplate.Triggers>
+
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+
+        </Style>
+    </UserControl.Resources>
+
+    <ContentControl d:DataContext="{x:Static core:ProductsListItemDesignModel.Instance}"
+                    Style="{StaticResource ContentStyle}">
+        <ContentControl.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCommand}"/>
+
+            <!--NOTE: We don't need to call a select command manualy before 
+            open this order due to LeftClick event fires immediately before LeftDoubleClick -->
+            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenProductCommand}"/>
+        </ContentControl.InputBindings>
+    </ContentControl>
+</UserControl>

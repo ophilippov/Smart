@@ -1,0 +1,267 @@
+﻿<UserControl x:Class="Smart.SuppliersListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Smart"
+             xmlns:core="clr-namespace:Smart.Core;assembly=Smart.Core"
+             mc:Ignorable="d" 
+             d:DesignWidth="600"
+             Height="Auto">
+
+    <UserControl.Resources>
+        <Style x:Key="ContentStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Border x:Name="outerBorder"
+                                Margin="0 2 0 3"
+                                Background="{StaticResource WindowBackgroundBrush}" 
+                                BorderBrush="{StaticResource SuppliersListItemNormalBrush}"
+                                BorderThickness="1"
+                                SnapsToDevicePixels="True"
+                                ClipToBounds="True">
+
+                            
+
+                                <!--Border for the Hover effect-->
+                                <Border x:Name="outerBorderHover"
+                                    Background="{StaticResource SuppliersListItemTransparentHoverBrush}"
+                                    BorderBrush="{StaticResource SuppliersListItemTransparentHoverBrush}"
+                                    BorderThickness="1"
+                                    SnapsToDevicePixels="True"
+                                    Margin="-1">
+
+                                    <!--Border for the checked effect-->
+                                    <Border x:Name="outerBorderChecked"
+                                            Background="Transparent" 
+                                            BorderBrush="Transparent"
+                                            BorderThickness="1"
+                                            SnapsToDevicePixels="True"
+                                            Margin="-1">
+
+                                        <Grid Height="60">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6"/>
+                                                <!--Spacing-->
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+                                                
+                                                <!--Spacing-->
+                                                <ColumnDefinition Width="10"/>
+
+                                                <ColumnDefinition Width="Auto"/>
+                                                
+                                            </Grid.ColumnDefinitions>
+
+
+                                            <!--Indicator for status-->
+                                            <Border x:Name="indicator"
+                                                    Grid.Column="0"
+                                                    Margin="-1 -1 0 -1"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="0"
+                                                    Grid.RowSpan="2"
+                                                    Background="{Binding SupplierStatus, Converter={local:SupplierStatusToBrushValueConverter}}"/>
+
+                                            
+                                            <!--Indicator for hover-->
+                                            <Border x:Name="indicatorHover"
+                                                    Grid.Column="0"
+                                                    Margin="-1 -1 0 -1"
+                                                    BorderBrush="{StaticResource SuppliersListItemTransparentHoverBrush}"
+                                                    BorderThickness="0"
+                                                    Background="{StaticResource SuppliersListItemTransparentHoverBrush}"
+                                                    Grid.RowSpan="2"/>
+                                            
+                                            <!--Indicator for checked-->
+                                            <Border x:Name="indicatorChecked"
+                                                    Grid.Column="0"
+                                                    Margin="-1 -1 0 -1"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="0"
+                                                    Background="Transparent"
+                                                    Grid.RowSpan="2"/>
+
+
+                                            <!-- Content -->
+                                            <Grid Grid.Column="2" >
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Top Row -->
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <!-- Minimum spacing -->
+                                                        <ColumnDefinition Width="20"/>
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- Name -->
+                                                    
+                                                    <TextBlock Grid.Column="0"
+                                                           Text="{Binding SupplierName}"
+                                                           Style="{StaticResource TextBlockCommon}"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           FontSize="{StaticResource FontSizePreLarge}"
+                                                           ToolTip="{Binding SupplierName}"
+                                                           />
+                                                    
+                                                    
+                                                    
+
+
+                                                    <TextBlock Grid.Column="2"
+                                                                    Style="{StaticResource TextBlockCommon}"
+                                                                    Text="{Binding JuridicalStatus, Converter={local:JuridicalStatusToStringValueConverter}}"/>
+
+
+
+                                                </Grid>
+
+                                                
+                                                <!--Bottom Row-->
+                                                <Grid Grid.Row="1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="210"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <!-- Minimum spacing -->
+                                                        <ColumnDefinition Width="20"/>
+                                                        <!--Spacing-->
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!--Director Name-->
+                                                    <TextBlock Text="{Binding DirectorName}"
+                                                               ToolTip="{Binding DirectorName}"
+                                                               Style="{StaticResource TextBlockCommon}"
+                                                               Grid.Column="0"/>
+
+                                                    <!--Debt summ-->
+                                                    <StackPanel Orientation="Horizontal"
+                                                                Grid.Column="1">
+                                                        <TextBlock Text="кредит. задолженность:"
+                                                                    Style="{StaticResource TextBlockCommon}"
+                                                                   ToolTip="кредиторская задолженность"/>
+                                                        <TextBlock Text="{Binding DebtsSumm, Converter={local:DoubleToStringPriceValueConverter}}"
+                                                                   Margin="10 0 0 0 "
+                                                                   Style="{StaticResource TextBlockCommon}"
+                                                                   Foreground="{StaticResource ForegroundDarkBlueBrush}"/>
+                                                        <TextBlock Text="UAH"
+                                                                   Margin="3 0 0 7"
+                                                                   Style="{StaticResource TextBlockCommon}"
+                                                                   VerticalAlignment="Bottom"
+                                                                   FontSize="{StaticResource FontSizeVerySmall}"
+                                                                   Foreground="{StaticResource ForegroundDarkBlueBrush}"/>
+
+                                                    </StackPanel>
+
+                                                    <!-- Active orders -->
+                                                    <StackPanel Orientation="Horizontal"
+                                                                HorizontalAlignment="Right"
+                                                                    Grid.Column="3">
+                                                        <TextBlock Text="акт. поставок:"
+                                                                        Style="{StaticResource TextBlockCommon}"/>
+                                                        <TextBlock Text="{Binding ActiveSupplies}"
+                                                                   Margin="10 0 0 0 "
+                                                                   Style="{StaticResource TextBlockCommon}"
+                                                                   Foreground="{StaticResource ForegroundDarkBlueBrush}"
+                                                                       />
+                                                        
+
+                                                    </StackPanel>
+
+                                                
+                                            </Grid>
+
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </Border>
+                            
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            
+                            
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+
+                                        <ColorAnimation Duration="0:0:0.2"
+                                                        To="{StaticResource OrdersListItemHover}"
+                                                        Storyboard.TargetProperty="Background.Color"
+                                                        Storyboard.TargetName="indicatorHover"
+                                            />
+                                        <ColorAnimation Duration="0:0:0.2"
+                                                        To="{StaticResource OrdersListItemHover}"
+                                                        Storyboard.TargetProperty="BorderBrush.Color"
+                                                        Storyboard.TargetName="outerBorderHover"
+                                            />
+
+                                        
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0.2"
+                                            To="{StaticResource OrdersListItemTransparentHover}"
+                                            Storyboard.TargetProperty="Background.Color"
+                                            Storyboard.TargetName="indicatorHover"
+                                            />
+                                        <ColorAnimation Duration="0:0:0.2"
+                                            To="{StaticResource OrdersListItemTransparentHover}"
+                                            Storyboard.TargetProperty="BorderBrush.Color"
+                                            Storyboard.TargetName="outerBorderHover"
+                                            />
+
+                                        
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            
+
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Background" 
+                                        TargetName="indicatorChecked"
+                                        Value="{StaticResource OrdersListItemSelectedBrush}"/>
+                                <Setter Property="BorderBrush"
+                                        TargetName="outerBorderChecked"
+                                        Value="{StaticResource OrdersListItemSelectedBrush}"/>
+                            </DataTrigger>
+
+                            
+                            
+
+                           
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            
+        </Style>
+    </UserControl.Resources>
+
+    <ContentControl d:DataContext="{x:Static core:SuppliersListItemDesignModel.Instance}"
+                    Style="{StaticResource ContentStyle}">
+        <ContentControl.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCommand}"/>
+            
+            <!--NOTE: We don't need to call a select command manualy before 
+            open this order due to LeftClick event fires immediately before LeftDoubleClick -->
+            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenSupplierCommand}"/>
+        </ContentControl.InputBindings>
+    </ContentControl>
+</UserControl>

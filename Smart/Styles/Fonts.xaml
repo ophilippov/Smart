@@ -1,0 +1,109 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Smart"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <FontFamily x:Key="SegoeUIRegular">pack://application;,,,/Fonts/#Segoe UI</FontFamily>
+    <FontFamily x:Key="SegoeUIItalic">pack://application;,,,/Fonts/#Segoe UI Italic</FontFamily>
+
+    <FontFamily x:Key="SegoeUISemibold">pack://application;,,,/Fonts/#Segoe UI Semibold</FontFamily>
+    <FontFamily x:Key="SegoeUISemiboldItalic">pack://application;,,,/Fonts/#Segoe UI Semibold Italic</FontFamily>
+    
+    <FontFamily x:Key="SegoeUILight">pack://application;,,,/Fonts/#Segoe UI Light</FontFamily>
+    <FontFamily x:Key="SegoeUILightItalic">pack://application;,,,/Fonts/#Segoe UI Light Italic</FontFamily>
+        
+    <FontFamily x:Key="SegoeUISemiLight">pack://application;,,,/Fonts/#Segoe UI Semilight</FontFamily>
+    <FontFamily x:Key="SegoeUISemiLightItalic">pack://application;,,,/Fonts/#Segoe UI Semilight Italic</FontFamily>
+
+    <FontFamily x:Key="FA5Regular">pack://application;,,,/Fonts/#Font Awesome 5 Free Regular</FontFamily>
+    <FontFamily x:Key="FA5BrandsRegular">pack://application;,,,/Fonts/#Font Awesome 5 Brands Regular</FontFamily>
+    <FontFamily x:Key="FA5Solid">pack://application;,,,/Fonts/#Font Awesome 5 Free Solid</FontFamily>
+    <FontFamily x:Key="FA4Regular">pack://application;,,,/Fonts/#FontAwesome</FontFamily>
+
+    <FontFamily x:Key="MaterialDesign">pack://application;,,,/Fonts/#Material Design Icons</FontFamily>
+    
+    <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeUILight}"/>
+    </Style>
+    <Style TargetType="{x:Type TextBlock}" x:Key="BaseTextBlockStyle">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeUILight}"/>
+    </Style>
+    
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}"/>
+    
+    
+    <!--FontAwesome Icons-->
+
+    <system:String x:Key="MDMinimizeIcon">&#xf5b0;</system:String>
+    <system:String x:Key="MDMaximizeIcon">&#xf5af;</system:String>
+    <system:String x:Key="SpinnerIcon">&#xf110;</system:String>
+    <system:String x:Key="SpinCircleIcon">&#xf1ce;</system:String>
+    <system:String x:Key="DatePickerIcon">&#xf073;</system:String>
+    <system:String x:Key="MDDatePickerIcon">&#xf0ee;</system:String>
+    <system:String x:Key="LeftAngleArrowIcon">&#xf104;</system:String>
+    <system:String x:Key="RightAngleArrowIcon">&#xf105;</system:String>
+    <system:String x:Key="DownAngleArrowIcon">&#xf107;</system:String>
+    <system:String x:Key="UpAngleArrowIcon">&#xf106;</system:String>
+
+    <system:String x:Key="CheckIcon">&#xf00c;</system:String>
+    <system:String x:Key="MDSearchIcon">&#xf349;</system:String>
+    <system:String x:Key="MDMoreIcon">&#xf1d8;</system:String>
+    <system:String x:Key="MDPencilIcon">&#xf3eb;</system:String>
+    <system:String x:Key="MDIDIcon">&#xf004;</system:String>
+    <system:String x:Key="IDIcon">&#xf2c2;</system:String>
+    <system:String x:Key="OrderInfoListIcon">&#xf46d;</system:String>
+    <system:String x:Key="PencilIcon">&#xf303;</system:String>
+    <system:String x:Key="MDCartPlusIcon">&#xf112;</system:String>
+    <system:String x:Key="CartIcon">&#xf217;</system:String>
+    <system:String x:Key="CloseIcon">+</system:String>
+    <system:String x:Key="MDCloseIcon">&#xf156;</system:String>
+    <system:String x:Key="PrintIcon">&#xf02f;</system:String>
+    <system:String x:Key="MDPrintIcon">&#xf42a;</system:String>
+    <system:String x:Key="TrashBoxIcon">&#xf1f8;</system:String>
+    <system:String x:Key="MDTrashBoxIcon">&#xf1c0;</system:String>
+    <system:String x:Key="PaymentIcon">&#xf155;</system:String>
+    <system:String x:Key="InvoiceIcon">&#xf15c;</system:String>
+    <system:String x:Key="SortAscIcon">&#xf15d;</system:String>
+    <system:String x:Key="SortDescIcon">&#xf15e;</system:String>
+    <system:String x:Key="MDCheckCircle">&#xf134;</system:String>
+    <system:String x:Key="MDExclamationCircle">&#xf5d6;</system:String>
+    <system:String x:Key="MDInformationCircle">&#xf2fd;</system:String>
+    <system:String x:Key="MDQuestionCircle">&#xf625;</system:String>
+    <system:String x:Key="MDWarningCircle">&#xf15a;</system:String>
+    <system:String x:Key="MDInformation">&#xf64e;</system:String>
+    <system:String x:Key="MDCancel">&#xf739;</system:String>
+    <system:String x:Key="MDCheck">&#xf12c;</system:String>
+    <system:String x:Key="MDShip">&#xf53d;</system:String>
+    <system:String x:Key="MDCartIcon">&#xf111;</system:String>
+    <system:String x:Key="MDBoxIcon">&#xf1e3;</system:String>
+    <system:String x:Key="MDPlusMultipleIcon">&#xf418;</system:String>
+    <system:String x:Key="MDOutcomeIcon">&#xf1c1;</system:String>
+    <system:String x:Key="MDPlusIcon">&#xf419;</system:String>
+    <system:String x:Key="MDListBulletIcon">&#xf279;</system:String>
+    <system:String x:Key="MDInformationCircleFilledIcon">&#xf2fc;</system:String>
+    <system:String x:Key="MDTagAddIcon">&#xf721;</system:String>
+    <system:String x:Key="MDSpinnerThirdIcon">&#xf771;</system:String>
+    <system:String x:Key="MDUserMultipleIcon">&#xf00e;</system:String>
+    <system:String x:Key="MDUserPlusIcon">&#xf014;</system:String>
+    <system:String x:Key="MDTagIcon">&#xf4f9;</system:String>
+    
+
+
+
+
+
+    <!--Font size-->
+    <system:Double x:Key="FontSizeVerySmall">10</system:Double>
+    <system:Double x:Key="FontSizeSmall">13</system:Double>
+    <system:Double x:Key="FontSizeRegular">15</system:Double>
+    <system:Double x:Key="FontSizeSemiLarge">17</system:Double>
+    <system:Double x:Key="FontSizePreLarge">20</system:Double>
+    <system:Double x:Key="FontSizeLarge">30</system:Double>
+    <system:Double x:Key="FontSizeVeryLarge">33</system:Double>
+    <system:Double x:Key="FontSizeLargest">40</system:Double>
+    <system:Double x:Key="FontSizeMostLargest">60</system:Double>
+</ResourceDictionary>
